@@ -1,0 +1,56 @@
+/*head*/
+body,div,ol,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,p,form,fieldset,legend,input{ margin:0; padding:0;}
+html {  width: 100%; font-family: 'Heiti SC', 'Microsoft YaHei'; outline: 0; -webkit-text-size-adjust:none;}
+body {  width:100%; -webkit-user-select: none; position: relative; background-color:#f8f8f8;}
+
+a{text-decoration: none;}
+input{
+    float: left;
+    border:1px solid #dedfe0;
+    background: white;
+    text-indent: 5px;
+    color:#6f6f6f;
+    text-align: left;
+    ime-mode: disabled;
+    box-shadow: none;
+}
+input,textarea::-webkit-input-placeholder { /* WebKit browsers */
+    /*background:lightgreen;*/
+    /*text-transform:uppercase;*/
+    /*letter-spacing:1px;*/
+    font-size: 10px;
+    text-align: left;
+    font-family: '微软雅黑';
+    color:  #bebebe;
+    text-indent: 5px;
+}
+input,textarea::-moz-placeholder {
+    /*background:lightgreen;*/
+    /*text-transform:uppercase;*/
+    /*letter-spacing:1px;*/
+    font-size: 10px;
+    text-align: left;
+    font-family: '微软雅黑';
+    color:  #bebebe;
+    text-indent: 5px;
+}
+
+
+
+/*content*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*foot*/

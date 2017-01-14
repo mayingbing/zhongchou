@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>91众筹</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width,height=device-height,maximum-scale=1.0"/>
+    <link href="/public/zhongchou/index/css/index.css" rel="stylesheet" type="text/css" />
+    <script  charset='utf-8' language='javascript' type='text/javascript' src="/public/zhongchou/jQuery/jquery-1.9.1.js"></script>
+
+</head>
+<body>
+
+<div style="width: 100%;height: 48px;background-color: #0e9def">
+
+    <a style="width: 20%;height:48px;float: left;" href="/index/login/login">
+        <img src="/public/zhongchou/index/image/fanhui_03.png" alt="返回" style="width: 22px;height: 20px;margin: 14px 0px 14px 13px"/>
+    </a>
+    <div style="width: 60%;float: left;text-align: center;line-height: 48px;color:white;font-size: 18px">注册</div>
+
+</div>
+<div style="width: 100%;height: 35px"></div>
+
+
+<form action="/index/login/dozuce" method="post">
+<div style="width: 100%;height: 50px;background-color: white;position: relative;border-bottom: 1px solid #bebebe;">
+
+    <div style="width: 20px;height: 20px;position: absolute;top: 15px;left: 15px;background: url('/public/zhongchou/index/image/wode2.png');background-size: cover"></div>
+
+    <input style="position: absolute;left: 50px;top: 5px;border: none;height: 40px;width: 260px" placeholder="请输入用户名" name="username" id="username" onchange="sendusername()"/>
+</div>
+    <input readonly="readonly"  id="is_ok" style="display: none;font-size: 0.3rem" />
+
+<div style="width: 100%;height: 50px;background-color: white;position: relative;border-bottom: 1px solid #bebebe;">
+
+    <div style="width: 20px;height: 20px;position: absolute;top: 15px;left: 15px;background: url('/public/zhongchou/index/image/shouji_03.png');background-size: cover"></div>
+
+    <input style="position: absolute;left: 50px;top: 5px;border: none;height: 40px;width: 260px" placeholder="请输入手机号" name="phone" id="tel"/>
+</div>
+
+<div style="width: 100%;height: 50px;background-color: white;position: relative;">
+
+    <div style="width: 20px;height: 20px;position: absolute;top: 15px;left: 15px;background: url('/public/zhongchou/index/image/shuru_03.png');background-size: cover"></div>
+
+    <input style="position: absolute;left: 50px;top: 5px;border: none;height: 40px;width: 180px" placeholder="请输入验证码" name="verifycode"/>
+
+    <input style="position: absolute;right: 18px;top: 10px;width: 80px;height: 30px;font-size: 10px;color: #0e9def;line-height: 30px;border: 1px solid #0e9def;border-radius: 5px;text-align: center" type="button" id="sendcode" onclick="sendSmsCode()" value="获取验证码" />
+
+</div>
+
+<div style="width: 100%;height: 15px"></div>
+
+<div style="width: 100%;height: 50px;background-color: white;position: relative;">
+
+    <div style="width: 20px;height: 20px;position: absolute;top: 15px;left: 15px;background: url('/public/zhongchou/index/image/suo_03.png');background-size: cover"></div>
+
+    <input style="position: absolute;left: 50px;top: 5px;border: none;height: 40px;width: 260px" placeholder="请设置登录密码" type="password" name="password"/>
+</div>
+<p style="width: 90%;height: 15px;margin-left: 15px;color: #ababab;font-size: 10px;line-height: 15px">请输入6-18位数字与字母的组合</p>
+
+<div style="width: 100%;height: 30px"></div>
+
+<input style="width: 90%;height: 40px;border-radius: 5px;text-align: center;line-height: 40px;color: white;font-size: 15px;background-color: #0e9def;margin-left: 5%" type="submit" value="注册" />
+
+
+</form>
+<div style="width: 100%;height: 30px"></div>
+
+<script type="text/javascript">
+
+    var endtime = 120;
+    var now =0;
+    function sendSmsCode() {
+        $.ajax({
+            url: "/index/login/sendsms",
+            type: "post",
+            dataType:"json",
+            data: "tel=" + $('#tel').val(),
+            async: false,
+            success: function (obj) {
+                alert(obj.msg);
+                if(obj.code==1){
+                    daoJiShi();
+                    $('#sendcode').attr('disabled','disabled');
+                    //倒计时
+                }else {
+                    $('#sendcode').removeAttr('disabled');
+                }
+            }
+        });
+    }
+    function daoJiShi()
+    {
+        now+=1;
+        var ofs= endtime -now;
+        $('#sendcode').val(ofs+ ' 秒');
+        if(ofs<0) {
+            $('#sendcode').val('获取验证码');
+            $('#sendcode').removeAttr('disabled');
+
+            return ;
+        };
+        setTimeout('daoJiShi()',1000);
+    }
+    function sendusername(){
+        var newusername = document.getElementById("username").value;
+        $.ajax({
+            url: "/index/login/isnewusername?username=" + newusername,
+            type: "post",
+            dataType:"json",
+            data: '',
+            async: false,
+            success: function (obj) {
+
+                if(obj.code==0){
+                    document.getElementById("is_ok").value = obj.msg;
+                    document.getElementById("is_ok").style.display='block';
+                    document.getElementById("is_ok").style.color='green';
+                    console.log(obj);
+                }else {
+                    document.getElementById("is_ok").value=obj.msg;
+                    document.getElementById("is_ok").style.display='block';
+                    document.getElementById("is_ok").style.color='red';
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

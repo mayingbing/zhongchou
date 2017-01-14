@@ -1,0 +1,291 @@
+{include file="index/head" /}
+
+<script type="text/javascript">
+    window.onload = function () {
+        flag = 0;
+        obj1 = document.getElementById("slider");
+        obj2 = document.getElementsByTagName("li");
+        obj2[0].style.backgroundColor = "#666666";
+        //默认被选中颜色
+        time = setInterval("turn();", 5000);
+        obj1.onmouseover = function () {
+            clearInterval(time);
+        }
+        obj1.onmouseout = function () {
+            time = setInterval("turn();", 6000);
+        }
+
+        for (var num = 0; num < obj2.length; num++) {
+            obj2[num].onmouseover = function () {
+                turn(this.innerHTML);
+                clearInterval(time);
+            }
+            obj2[num].onmouseout = function () {
+                time = setInterval("turn();", 6000);
+            }
+        }
+        //延迟加载图片，演示的时候，使用本地图片
+        //上线后请改为二级域名提供的图片地址
+        document.getElementById("second").src="/public/zhongchou/index/image/lunbo2.png";
+        //使用图片宽660，高550
+
+    }
+    function turn(value) {
+        if (value != null) {
+            flag = value - 2;
+        }
+        if (flag < obj2.length - 1)
+            flag++;
+        else
+            flag = 0;
+        obj1.style.top = flag * (-200) + "px";
+        for (var j = 0; j < obj2.length; j++) {
+            obj2[j].style.backgroundColor = "#ffffff";
+        }
+        obj2[flag].style.backgroundColor = "#666666";
+    }
+
+    function show_mask(){
+        var state =  document.getElementById('mask').style.display;
+        if(state == 'none'){
+            document.getElementById('mask').style.display='block';
+        }else {
+            document.getElementById('mask').style.display='none';
+        }
+    }
+    function hide_mask(){
+        document.getElementById('mask').style.display='none';
+    }
+    function select_zclx(obj,nav){
+
+        if(nav == '1'){
+
+            $('#zclx1').children().css("backgroundColor", "white");
+            $('#zclx2').children().css("backgroundColor", "white");
+            obj.style.backgroundColor = "#0e9def";
+            alert(obj.innerHTML);
+
+        }else if(nav == 2){
+            $('#xmlx1').children().css("backgroundColor", "white");
+            $('#xmlx2').children().css("backgroundColor", "white");
+            obj.style.backgroundColor = "#0e9def";
+            alert(obj.innerHTML);
+        }else {
+            $('#xmzt1').children().css("backgroundColor", "white");
+            $('#xmzt2').children().css("backgroundColor", "white");
+            obj.style.backgroundColor = "#0e9def";
+            alert(obj.innerHTML);
+        }
+    }
+
+
+
+</script>
+
+<style>
+    /*轮播图*/
+    #wrap
+    {
+        height: 200px;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        margin-top: 5px;
+        background-color: #eeeeee;
+        z-index: -10;
+    }
+    #wrap ul
+    {
+        list-style: none;
+        position: absolute;
+        top: 170px;
+        left: 250px;
+    }
+    #wrap li
+    {
+        margin-left:2px;
+        opacity: .3;
+        filter: alpha(opacity=30);
+        text-align: center;
+        line-height: 30px;
+        font-size: 20px;
+        height: 30px;
+        width: 30px;
+        background-color: #fff;
+        float: left;
+        border-radius:3px;
+        cursor:pointer;
+    }
+    #slider
+    {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        text-align: center;
+    }
+    #slider img
+    {
+        border: none;
+
+    }
+    p{float: left;text-indent: 3%;font-size: 15px;color: #2b2b2b;}
+</style>
+
+<div id="wrap">
+    <div id="slider">
+        <a target="_blank" href="#"><img style="width: 350px;height: 200px" src="/public/zhongchou/index/image/lunbo1.png" /></a>
+        <a target="_blank" href="#"><img style="width: 350px;height: 200px" id="second" /></a>
+
+    </div>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+
+    </ul>
+</div>
+
+
+
+<div style="height: 10px"></div>
+
+<a href="/index/index/xmxq">
+
+    <div style='position: relative;width: 94%;margin-left: 3%;height: 260px;background: url("/public/zhongchou/index/image/roomimg.png") no-repeat;background-size: cover'>
+
+        <div style="position: absolute;top: 20px;left:0;width: 80px;height: 20px;background-image: url('/public/zhongchou/index/image/kuang.png');background-size: cover;font-size: 10px;line-height: 20px;color: white;text-indent: 3px">
+            收益权众筹
+        </div>
+        <div style="position: absolute;bottom: -40px;right: 15px;width: 80px;height: 80px;background-image: url('/public/zhongchou/index/image/yuan.png');background-size: cover;font-size: 10px;color: #f3b625;text-align: center;font-weight: bold;">
+            <div style="position: relative;width: 80px;line-height: 50px">100%</div>
+            <div style="position: relative;width: 80px;line-height: 10px">项目进度</div>
+        </div>
+    </div>
+    <div style="margin: 3px 0 3px 3%;color: #0e9def;font-size: 17px;font-weight: bold">杭州云居酒店</div>
+    <div style="height: 20px">
+        <p >状态</p>
+        <p >已筹集:</p>
+        <p style="text-indent: 3px;color: #f3b625">8000万元</p>
+        <p >是否完成</p>
+
+    </div>
+
+
+
+</a>
+
+
+<div style="height: 10px"></div>
+
+<a href="/index/index/xmxq">
+
+    <div style='position: relative;width: 94%;margin-left: 3%;height: 260px;background: url("/public/zhongchou/index/image/roomimg.png") no-repeat;background-size: cover'>
+
+        <div style="position: absolute;top: 20px;left:0;width: 80px;height: 20px;background-image: url('/public/zhongchou/index/image/kuang.png');background-size: cover;font-size: 10px;line-height: 20px;color: white;text-indent: 3px">
+            收益权众筹
+        </div>
+        <div style="position: absolute;bottom: -40px;right: 15px;width: 80px;height: 80px;background-image: url('/public/zhongchou/index/image/yuan.png');background-size: cover;font-size: 10px;color: #f3b625;text-align: center;font-weight: bold;">
+            <div style="position: relative;width: 80px;line-height: 50px">100%</div>
+            <div style="position: relative;width: 80px;line-height: 10px">项目进度</div>
+        </div>
+    </div>
+    <div style="margin: 3px 0 3px 3%;color: #0e9def;font-size: 17px;font-weight: bold">杭州云居酒店</div>
+    <div style="height: 20px">
+        <p style="">状态</p>
+        <p style="">已筹集:</p>
+        <p style="text-indent: 3px;color: #f3b625">8000万元</p>
+        <p style="">是否完成</p>
+
+    </div>
+
+
+
+</a>
+
+
+
+<div id="mask" style="width: 100%;height: 1500px;position: absolute;top: 48px;z-index: 100;background-color: rgba(1,1,1,0.5);display: none;">
+
+
+    <div id="popup" style="width: 80%;height: 350px;position: absolute;top: 60px;left: 10%;background-color: rgba(255,255,255,1);border-radius: 10px;" >
+
+        <div style="position: absolute;top: 5px;right: 5px;width: 26px;height: 26px;border-radius: 13px;background: url('/public/zhongchou/index/image/close.png');background-size: cover;z-index: 1000" onclick="hide_mask()"></div>
+
+
+        <div style="position: relative;width: 90%;height: 40px;margin: 5px 0 0 5%;border-bottom: 1px solid #cdcdcd;">
+            <p style="position: absolute;bottom: 5px;color: #353434;font-size: 15px;font-weight: bold">众筹类型</p>
+        </div>
+        <div style="font-size: 10px;color: #353434">
+            <div style="width: 90%;height: 30px;margin: 3px 0 0 5%;"  id="zclx1">
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px;background-color: #0e9def" onclick="select_zclx(this,1)">全部</div>
+                <div style="width: 34%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px"  onclick="select_zclx(this,1)">酒店</div>
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px"  onclick="select_zclx(this,1)">民宿</div>
+            </div>
+            <div style="width: 90%;height: 30px;margin: 1px 0 0 5%;" id="zclx2">
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px"  onclick="select_zclx(this,1)">公寓</div>
+                <div style="width: 34%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px"  onclick="select_zclx(this,1)">创投</div>
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px"  onclick="select_zclx(this,1)">其他</div>
+            </div>
+        </div>
+
+        <div style="position: relative;width: 90%;height: 25px;margin: 5px 0 0 5%;border-bottom: 1px solid #cdcdcd;">
+            <p style="position: absolute;bottom: 5px;color: #353434;font-size: 15px;font-weight: bold">项目类型</p>
+        </div>
+        <div style="font-size: 10px;color: #353434">
+            <div style="width: 90%;height: 30px;margin: 3px 0 0 5%;" id="xmlx1">
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px;background-color: #0e9def" onclick="select_zclx(this,2)">全部</div>
+                <div style="width: 34%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px" onclick="select_zclx(this,2)">私募股权</div>
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px" onclick="select_zclx(this,2)">消费众筹</div>
+            </div>
+            <div style="width: 90%;height: 30px;margin: 1px 0 0 5%;" id="xmlx2">
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px" onclick="select_zclx(this,2)">收益权众筹</div>
+            </div>
+        </div>
+
+        <div style="position: relative;width: 90%;height: 25px;margin: 5px 0 0 5%;border-bottom: 1px solid #cdcdcd;">
+            <p style="position: absolute;bottom: 5px;color: #353434;font-size: 15px;font-weight: bold">项目状态</p>
+        </div>
+        <div style="font-size: 10px;color: #353434">
+            <div style="width: 90%;height: 30px;margin: 3px 0 0 5%;" id="xmzt1">
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px;background-color: #0e9def" onclick="select_zclx(this,3)">全部</div>
+                <div style="width: 34%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px" onclick="select_zclx(this,3)">预热中</div>
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px" onclick="select_zclx(this,3)">预约中</div>
+            </div>
+            <div style="width: 90%;height: 30px;margin: 1px 0 0 5%;" id="xmzt2">
+                <div style="width: 33%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px" onclick="select_zclx(this,3)">筹集中</div>
+                <div style="width: 34%;height: 30px;float: left;border-radius: 5px;text-align: center;line-height: 30px" onclick="select_zclx(this,3)">已完成</div>
+            </div>
+        </div>
+
+        <div style="position: absolute;bottom: 5px;left: 5%;width: 90%;height: 30px;background-color: #0e9def;color: white;text-align: center;font-size: 17px;line-height: 30px;border-radius: 10px" onclick="hide_mask()">
+            确定
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+<div style="height: 55px"></div>
+
+<div style="height: 49px;width: 100%;background-color: white;position:fixed;bottom:0px;left:0px;color:#a9aeb1 ">
+
+    <a href="/" id="tabbar1" style="width: 33%;float: left;height: 49px;text-align: center;color:#a9aeb1" onclick="select_foot(1)">
+        <img src="/public/zhongchou/index/image/zhongchou2.png" style="width: 40px;height: 27px;padding-top: 5px">
+        <div style="font-size: 12px;font-weight: bold;color: #0e9def">众筹</div>
+    </a>
+    <a href="/index/index/faxian" id="tabbar2" style="width: 34%;float: left;height: 49px;text-align: center;color:#a9aeb1" onclick="select_foot(2)">
+        <img src="/public/zhongchou/index/image/faxian.png" style="width: 40px;height: 27px;padding-top: 5px">
+        <div style="font-size: 12px">发现</div>
+    </a>
+    <a href="/index/index/self" id="tabbar3" style="width: 33%;float: left;height: 49px;text-align: center;color:#a9aeb1" onclick="select_foot(3)">
+        <img src="/public/zhongchou/index/image/wode.png" style="width: 40px;height: 27px;padding-top: 5px">
+        <div style="font-size: 12px">我的</div>
+    </a>
+
+</div>
+</body>
+</html>
