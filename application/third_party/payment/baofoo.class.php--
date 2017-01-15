@@ -1,0 +1,64 @@
+<?php
+
+class baofooPayment {
+    
+	var $name = '宝付';//网银在线
+    var $logo = 'baofoo';
+    var $version = 4.0;
+    var $description = "宝付。";
+    var $type = 1;//1->只能启动，2->可以添加
+    var $charset = 'GB2312';
+	
+    var $orderby = 3;
+
+    function ToSubmit($data){
+	global $_G;
+	$MerchantID = $data["MerchantID"];	// 商户号，这里为测试商户号1001，替换为自己的商户号(老版商户号为4位或5位,新版为8位)即可
+	$PayID=1000;
+	$TradeDate=date("YmdHis",time());
+	
+	$TransID =  $data["trade_no"];
+	$OrderMoney=$data["money"]*100;
+	$PageUrl =$_G['system']['con_weburl']."/modules/payment/Return_url.php";
+	$Return_url=$_G['system']['con_weburl']."/modules/payment/Return_url.php";
+	$NoticeType=0;
+	$Md5Key   = $data["VerficationCode"];
+    $Md5Sign=md5($MerchantID.'|'.$PayID.'|'.$TradeDate.'|'.$TransID.'|'.$OrderMoney.'|'.$PageUrl.'|'.$Return_url.'|'.$NoticeType.'|'.$Md5Key);
+	
+		$url="http://tgw.baofoo.com/payindex?";
+		$url.="MerchantID={$MerchantID}";
+		$url.="&PayID={$PayID}";
+		$url.="&TradeDate={$TradeDate}";
+		$url.="&TransID={$TransID}";
+		$url.="&OrderMoney={$OrderMoney}";
+		$url.="&ProductName={$ProductName}";
+		$url.="&Amount={$Amount}";
+		$url.="&ProductLogo={$ProductLogo}";
+		$url.="&Username={$Username}";
+		$url.="&OrderMoney={$OrderMoney}";
+		$url.="&Email={$Email}";
+		$url.="&Mobile={$Mobile}";
+		$url.="&AdditionalInfo={$AdditionalInfo}";
+		$url.="&PageUrl={$PageUrl ";
+		$url.="&Return_url={$Return_url}";
+		$url.="&NoticeType={$NoticeType}";
+		$url.="&Md5Sign={$Md5Sign}";
+		return $url;
+    }
+	
+	
+
+	function GetFields(){
+        return array(
+			'MerchantID'=>array(
+					'label'=>'商户号',
+					'type'=>'string'
+				),
+                'VerficationCode'=>array(
+                        'label'=>'密钥',
+                        'type'=>'string'
+                )
+		);
+    }
+}
+?>

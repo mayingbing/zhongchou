@@ -13,7 +13,7 @@
 
 <div style="width: 100%;height: 48px;background-color: #0e9def">
 
-    <a style="width: 20%;height:48px;float: left;" href="/index/index/xmxq">
+    <a style="width: 20%;height:48px;float: left;" href="/index/index/xmxq/f/<?php echo 'add'.rand(100,999).$borrow_id;  ?>">
         <img src="/public/zhongchou/index/image/fanhui_03.png" alt="返回" style="width: 22px;height: 20px;margin: 14px 0px 14px 13px"/>
     </a>
     <div style="width: 60%;float: left;text-align: center;line-height: 48px;color:white;font-size: 18px">筹资</div>
@@ -21,21 +21,58 @@
 </div>
 
 <div style="width: 100%;height: 50px;text-indent: 10px">
-    <p style="line-height: 30px;font-size: 15px;color: #5b5b5b">苏尚酒店</p>
+    <p style="line-height: 30px;font-size: 15px;color: #5b5b5b"><?= $curr_borrow['name'] ?></p>
     <p style="line-height: 20px;font-size: 10px;color: #5b5b5b;float: left">剩余可投</p>
-    <p style="line-height: 20px;font-size: 10px;color: #0e9def">14100元</p>
+    <p style="line-height: 20px;font-size: 10px;color: #0e9def">{$curr_borrow.account - $curr_borrow.borrow_account_yes}元</p>
 </div>
 <div style="width: 100%;height: 5px"></div>
 <div style="width: 100%;height: 35px;line-height: 35px;background-color: white;text-indent: 10px;font-size: 13px;color: #949393">
     <p style="float: left">年化收益</p>
-    <p style="float: right;margin-right: 10px;color: #0e9def">9%</p>
+    <p style="float: right;margin-right: 10px;color: #0e9def"><?= $curr_borrow['borrow_apr'] ?>%</p>
 </div>
 
 <div style="width: 100%;height: 2px"></div>
 
 <div style="width: 100%;height: 35px;line-height: 35px;background-color: white;text-indent: 10px;font-size: 13px;color: #949393">
     <p style="float: left">交易期限</p>
-    <p style="float: right;margin-right: 10px;color: #0e9def">3个月</p>
+    <p style="float: right;margin-right: 10px;color: #0e9def">
+        <?php if($curr_borrow['borrow_period'] == 0.03): ?>1</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.06): ?>2</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.10): ?>3</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.13): ?>4</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.16): ?>5</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.20): ?>6</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.23): ?>7</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.26): ?>8</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.30): ?>9</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.33): ?>10</font>天
+
+        <?php elseif($curr_borrow['borrow_period'] == 0.36): ?>11</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.40): ?>12</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.43): ?>13</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.46): ?>14</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.50): ?>15</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.53): ?>16</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.56): ?>17</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.60): ?>18</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.63): ?>19</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.66): ?>20</font>天
+
+        <?php elseif($curr_borrow['borrow_period'] == 0.70): ?>21</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.73): ?>22</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.76): ?>23</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.80): ?>24</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.83): ?>25</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.86): ?>26</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.90): ?>27</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.93): ?>28</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.96): ?>29</font>天
+        <?php elseif($curr_borrow['borrow_period'] == 0.10): ?>30</font>天
+        <?php elseif($curr_borrow['borrow_period'] >= 1 && $curr_borrow['borrow_period']<10): ?>
+        <?php echo substr($curr_borrow['borrow_period'],0,2); ?></font>个月
+        <?php else: ?><?php echo substr($curr_borrow['borrow_period'],0,3); ?></font>个月
+        <?php endif; ?>
+    </p>
 </div>
 
 <div style="width: 100%;height: 2px"></div>
@@ -47,26 +84,26 @@
 
 <div style="width: 100%;height: 20px"></div>
 
-
+<form action="/index/index/invest" method="post">
 
 <div style="width: 100%;height: 50px;background-color: white;position: relative">
 
     <div style="width: 70px;line-height: 50px;font-size: 11px;text-align: center">投资金额</div>
 
-    <input style="position: absolute;left: 70px;top: 5px;border: none;height: 40px;width: 260px" placeholder="请输入金额"/>
+    <input style="position: absolute;left: 70px;top: 5px;border: none;height: 40px;width: 260px" placeholder="请输入金额" name="tz_account"/>
 </div>
 
 
-<div style="width: 100%;line-height: 30px;text-indent: 10px;font-size: 13px;color: #939292">投资金额 :  元</div>
+<div style="width: 100%;line-height: 30px;text-indent: 10px;font-size: 13px;color: #939292">投资金额 : 最多 {$curr_borrow.account - $curr_borrow.borrow_account_yes} 元</div>
 
 
 <div style="width: 100%;height: 50px;background-color: white;position: relative">
 
     <div style="width: 70px;line-height: 50px;font-size: 11px;text-align: center">支付金额</div>
 
-    <input style="position: absolute;left: 70px;top: 5px;border: none;height: 40px;width: 260px" placeholder="0"/>
+    <input style="position: absolute;left: 70px;top: 5px;border: none;height: 40px;width: 260px" placeholder="0" name="zf_account"/>
 </div>
-
+<input type="hidden" name="borrow_id" />
 
 <div style="width: 100%;line-height: 30px;text-indent: 10px;font-size: 13px;color: #939292">账户余额 :  元</div>
 
@@ -78,11 +115,11 @@
 
 <div style="width: 100%;height: 30px"></div>
 
-<div style="width: 90%;height: 40px;border-radius: 5px;text-align: center;line-height: 40px;color: white;font-size: 15px;background-color: #0e9def;margin-left: 5%" onclick="show_mask()">
-    立即筹资
-</div>
+<input style="width: 90%;height: 40px;border-radius: 5px;text-align: center;line-height: 40px;color: white;font-size: 15px;background-color: #0e9def;margin-left: 5%" type="submit" value="马上投标" />
+
 <div style="width: 100%;height: 30px"></div>
 
+</form>
 
 </body>
 </html>

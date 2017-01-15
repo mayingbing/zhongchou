@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;" />
+
+    <title>91众筹</title>
+    <link rel="stylesheet" type="text/css" href="/public/zhongchou/index/css/firstcss.css"/>
+</head>
+
+<body>
+<div class="header_91">
+    <p class="title">支付方式 </p>
+</div>
+
+<div class="out_money_content">
+
+    <form action ="/index/topup/beiTopUpStep2" method = "post" >
+        <div class="out_block">
+            <div class="text weixin">微信安全支付</div>
+            <input class="radio_input" type="radio" name="paymethod"   value="0"  />
+        </div>
+
+        <div class="out_block">
+            <div class="text yinlian">银行卡支付</div>
+            <input class="radio_input" type="radio" name="paymethod"   value="1" checked="checked"  />
+        </div>
+
+        <?php echo $errormsg?>
+        <div class="account_content">
+            <div class="invests">
+                <input type="submit" class="button tuichu" value="下一步"/>
+            </div>
+        </div>
+     </form>
+        <!--<div class="out_block"></div>-->
+</div>
+
+
+
+<!--<div class="footer_91"></div>-->
+</body>
+</html>

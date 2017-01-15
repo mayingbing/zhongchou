@@ -7,10 +7,10 @@ class Sms extends Model
 {
     protected $table = 'yyd_approve_smslog';
 
-    //éªŒè¯æ‰‹æœºå·ç æ ¼å¼
+    //ÑéÖ¤ÊÖ»úºÅÂë¸ñÊ½
     public function check_phonenum($phonenum)
     {
-        //åˆ¤æ–­æ‰‹æœºæ˜¯å¦æ­£ç¡®
+        //ÅĞ¶ÏÊÖ»úÊÇ·ñÕıÈ·
         if (!preg_match("/^1[3|4|5|7|8]\d{9}$/", $phonenum)) {
             return FALSE;
         } else {
@@ -20,7 +20,7 @@ class Sms extends Model
     }
 
 
-    //è·å–ç”¨æˆ·IP
+    //»ñÈ¡ÓÃ»§IP
     public function ip_address()
     {
         if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
@@ -58,34 +58,34 @@ class Sms extends Model
     {
         $data = array
         (
-            'account' => $uid,                    //ç”¨æˆ·è´¦å·
-            'password' => $pwd,            //MD5ä½32å¯†ç ,å¯†ç å’Œç”¨æˆ·åæ‹¼æ¥å­—ç¬¦
-            'mobile' => $phone,                //å·ç 
+            'account' => $uid,                    //ÓÃ»§ÕËºÅ
+            'password' => $pwd,            //MD5Î»32ÃÜÂë,ÃÜÂëºÍÓÃ»§ÃûÆ´½Ó×Ö·û
+            'mobile' => $phone,                //ºÅÂë
             'AddSing' => $AddSing,
             'action' => $action,
-            //'content' => $content //Encoding::toUTF8($content) //mb_convert_encoding($content,"UTF-8",mb_detect_encoding($content)),			//å†…å®¹
+            //'content' => $content //Encoding::toUTF8($content) //mb_convert_encoding($content,"UTF-8",mb_detect_encoding($content)),			//ÄÚÈİ
             'content'=>mb_convert_encoding($content,"GBK","UTF-8"),
         );
 
 
-        $re = self::postSMS_Common($http, $data);            //POSTæ–¹å¼æäº¤
+        $re = self::postSMS_Common($http, $data);            //POST·½Ê½Ìá½»
         //$re = mb_convert_encoding($re,'UTF-8','ASCII');//mb_detect_encoding($re);
 
         $xml = simplexml_load_string($re);
 
         if ($xml->errorstatus->error[0] . PHP_EOL > 0) {
-            return "å‘é€å¤±è´¥! çŠ¶æ€ï¼š";//.$xml->errorstatus->remark[0].PHP_EOL;
+            return "·¢ËÍÊ§°Ü! ×´Ì¬£º";//.$xml->errorstatus->remark[0].PHP_EOL;
         } else {
             if ($xml->successCounts[0] . PHP_EOL > 0) {
-                return 1;//"å‘é€æˆåŠŸ!";
+                return 1;//"·¢ËÍ³É¹¦!";
             } else {
                 if ($xml->taskID != null) {
-                    return "å‘é€å¤±è´¥! taskID:";//.$xml->taskID[0].PHP_EOL;
+                    return "·¢ËÍÊ§°Ü! taskID:";//.$xml->taskID[0].PHP_EOL;
                 }
             }
         }
 
-        return "å‘é€å¤±è´¥!";//+","+$data['password']+","+$data['mobile']+","+$data['content'];
+        return "·¢ËÍÊ§°Ü!";//+","+$data['password']+","+$data['mobile']+","+$data['content'];
 
     }
     public static function postSMS_Common($url, $data = '')
@@ -96,7 +96,7 @@ class Sms extends Model
         $file = $row['path'];
         $post = '';
         while (list($k, $v) = each($data)) {
-            $post .= rawurlencode($k) . "=" . rawurlencode($v) . "&";    //è½¬URLæ ‡å‡†ç 
+            $post .= rawurlencode($k) . "=" . rawurlencode($v) . "&";    //×ªURL±ê×¼Âë
         }
         $post = substr($post, 0, -1);
         $len = strlen($post);
@@ -134,7 +134,7 @@ class Sms extends Model
 
     public function sendsmstozk($tel,$contents){
 
-        //å‘é€ä¿¡æ¯ç»™å®¢æˆ·
+        //·¢ËÍĞÅÏ¢¸ø¿Í»§
         $smsdata = array();
         $smsdata['phone'] = $tel;
         $smsdata['status'] = 1;
@@ -150,7 +150,7 @@ class Sms extends Model
     }
     public function sendsmstozzk($tel,$contents){
 
-        //å‘é€ä¿¡æ¯ç»™å®¢æˆ·
+        //·¢ËÍĞÅÏ¢¸ø¿Í»§
         $smsdata = array();
         $smsdata['phone'] = $tel;
         $smsdata['status'] = 1;

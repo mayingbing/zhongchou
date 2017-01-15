@@ -63,11 +63,11 @@
     <div style="float: left;width: 100%;height: 60px;text-align: center;color: white;">
         <div style="float: left;width: 50%">
             <p style="font-size: 12px">账户总资产 (元)</p>
-            <p style="font-size: 20px;line-height: 30px">0.00</p>
+            <p style="font-size: 20px;line-height: 30px"><?= $_list["a_total"] ?></p>
         </div>
         <div style="float: left;width: 50%">
-            <p style="font-size: 12px">收益总额 (元)</p>
-            <p style="font-size: 20px;line-height: 30px">0.00</p>
+            <p style="font-size: 12px">可用金额 (元)</p>
+            <p style="font-size: 20px;line-height: 30px"><?= $_list["a_remain"] ?></p>
         </div>
     </div>
 
@@ -79,10 +79,10 @@
     <div style="width: 20px;height: 20px;position: absolute;top: 20px;left: 15px;background: url('/public/zhongchou/index/image/money.png');background-size: cover;border-radius: 20px"></div>
     <div style="position: absolute;left: 50px">
         <p style="line-height: 25px;margin-top: 10px;font-size: 10px;color: #6e6e6e">可用余额(元)</p>
-        <p style="line-height: 15px;margin-bottom: 10px;font-size: 15px;color: #6e6e6e">0.00</p>
+        <p style="line-height: 15px;margin-bottom: 10px;font-size: 15px;color: #6e6e6e"><?= $_list["a_remain"] ?></p>
     </div>
 
-    <a href="/index/index/acount" style="position: absolute;right: 80px;top: 15px;width: 60px;height: 30px;font-size: 13px;color: white;background-color: #0e9def;text-align: center;line-height: 30px;border-radius: 5px;border: 1px">充值</a>
+    <a href="/index/index/invest" style="position: absolute;right: 80px;top: 15px;width: 60px;height: 30px;font-size: 13px;color: white;background-color: #0e9def;text-align: center;line-height: 30px;border-radius: 5px;border: 1px">充值</a>
     <a href="/index/index/tixian" style="position: absolute;right: 10px;top: 15px;width: 60px;height: 30px;font-size: 13px;color: #0e9def;border: 1px solid #0e9def;text-align: center;line-height: 30px;border-radius: 5px">提现</a>
 
 </div>

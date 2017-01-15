@@ -8,9 +8,9 @@ class Base extends Controller{
 
     public function __construct()
     {
-        // å…ˆè°ƒç”¨çˆ¶ç±»çš„æ„é€ å‡½æ•°
+        // ÏÈµ÷ÓÃ¸¸ÀàµÄ¹¹Ôìº¯Êı
         parent::__construct();
-        if(empty(Session::get('userid'))){
+        if(Session::get('userid')==''){
             $url="/index/login/login";
             $this->redirect($url);
         }

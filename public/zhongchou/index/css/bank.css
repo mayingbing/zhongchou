@@ -1,0 +1,96 @@
+.out_bank_content{
+ width: 100%;
+}
+
+
+.bankbtn {
+    line-height: 3em;
+    display: block;
+    width: 80%;
+    height: 3em;
+    background: #069ef4;
+    margin: 1em auto 0;
+    text-align: center;
+    border-radius: 1em;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+    color: #fff;
+}
+
+.out_bank_content > p {
+    width: 90%;
+    height: 5em;
+    line-height: 5em;
+    color: black;
+    text-align: center;
+    margin: 1em auto 0;
+    border-radius: 5px;
+    font-size: 20px;
+    color: #595959;
+    background: url("../images/card_back.jpg") no-repeat;
+}
+.out_bank_content> span{
+    padding: 10px 0 0 0;
+    margin: 0 0 -50px 40px;
+    display: block;
+    color: #595959;
+    font-size: 20px;
+    font-family: 'Microsoft Yahei', Tahoma, Arial, 'Æ»·½';
+}
+
+
+
+#ccontent{
+    margin: 4em auto;
+    text-align: center;
+}
+
+#tcontent{
+    margin: 4em auto;
+    text-align: center;
+}
+
+#tcontent{
+    font-size: 16px;
+}
+
+#tcontent>input[type=number],#ccontent>input[type=number],
+#tcontent>input[type=password],#ccontent>input[type=password]
+{
+    width: 60%;
+    height: 2em;
+    outline: none;
+}
+
+
+#ccontent>input[type=button],#tcontent>input[type=button]{
+    line-height: 3em;
+    width: 80%;
+    height: 3em;
+    background: #069ef4;
+    margin: 1em auto 0;
+    text-align: center;
+    border-radius: 1em;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    border: none;
+}
+#ccontent>input[id=code]{
+width: 50%;
+}
+#ccontent>input[id=codebtn]{
+    width: 25%;
+    background: #069ef4;
+    margin: 1em auto 0;
+    text-align: center;
+    border-radius: 1em;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+    color: #fff;
+    font-size: 10px;
+    outline: none;
+    border: none;
+}

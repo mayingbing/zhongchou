@@ -1,0 +1,2 @@
+这个demo中http的用的socket，https用的exec调用系统的curl
+在php.ini在找到这行disable_functions = exec,system,ini_alter,readlink,symlink,leak,proc_open,popepassthru,chroot,scandir,chgrp,chown,escapeshellcmd,escapeshellarg,shell_exec,proc_get_status,passthru,popen这些都是禁用的函数，每个函数用逗号分开的，你把exec,删除了保存就可以用https了

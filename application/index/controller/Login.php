@@ -191,5 +191,11 @@ class Login extends Controller{
                 }
             }
     }
+    public function quit(){
+        Session::set('userid','');
+        Session::set('accountInfo','');
 
+        $url = '/index/login/login';
+        $this->redirect($url);
+    }
 }
