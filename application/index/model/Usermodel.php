@@ -136,6 +136,7 @@ class Usermodel extends Model{
 
     public function AddUsersLog($data)
     {
+        var_dump($data);
         $sql = "insert into yyd_users_log set addtime='" . time() . "',addip='" . $this->ip_address() . "'";
         foreach ($data as $key => $value) {
             $sql .= ",`$key` = '$value'";
@@ -1585,10 +1586,12 @@ class Usermodel extends Model{
         $sql = "select *  from yyd_user_bankcard where user_id = " . $user_id;
 
         $result = $this->db_fetch_array($sql);
-        $result["status"] = 1;
-        if ($result == "") {
-            $result["status"] = -1;
-        }
+        $result["status"] = -1;
+//        if (empty($result)) {
+//            $result["status"] = -1;
+//        }else{
+//            $result["status"] = 1;
+//        }
         return $result;
     }
 
@@ -1806,7 +1809,8 @@ class Usermodel extends Model{
         }
         Db::query($sql);
         //返回上次insert 的 id
-        $id = Db::insert_id();
+        $id = Db::query('select last_insert_id()');
+        $id = $id['0']['last_insert_id()'];
         $log_info["user_id"] = $data['user_id'];//操作用户id
         $log_info["nid"] = $data['nid'];//订单号
         $log_info["money"] = $data['total'];//操作金额

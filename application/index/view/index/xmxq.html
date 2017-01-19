@@ -35,7 +35,7 @@
 
 <div style="width: 100%;height: 48px;background-color: #0e9def">
 
-    <a style="width: 20%;height:48px;float: left;" href="/">
+    <a style="width: 20%;height:48px;float: left;" href="/index/index/index">
         <img src="/public/zhongchou/index/image/fanhui_03.png" alt="返回" style="width: 22px;height: 20px;margin: 14px 0px 14px 13px"/>
     </a>
     <div style="width: 60%;float: left;text-align: center;line-height: 48px;color:white;font-size: 18px">项目详情</div>
@@ -96,8 +96,8 @@
 <div style="width: 80px;height: 40px;float: right;color: #bbbbbb;font-size: 12px;margin-right: 15px;position: relative;">
     <p style="position: absolute;bottom: 0;width: 80px;height: 15px;line-height: 15px;text-align: right"><?= $curr_borrow['tender_account_min'] ?>元起投</p>
 </div>
-
-<img src="/public/zhongchou/index/image/tutu_02.png" alt="tu" style="width: 100%;height: 200px;margin-top: 5px;"/>
+<?php $img = !empty($curr_borrow['upimg'])?'http://91fintec.com/'.$curr_borrow['upimg']: $img ?>
+<img src="<?php echo $img ; ?>" alt="tu" style="width: 100%;height: 200px;margin-top: 5px;"/>
 
 <div style="width: 100%;height: 60px;background-color: white;">
     <div style="width: 80%;height: 60px;margin-left: 10%;font-size: 10px;text-align: center;color: #393939">
@@ -575,10 +575,17 @@
 
 <div style="width: 100%;height: 50px"></div>
 <div style="width: 100%;height: 50px"></div>
+<?php if($is_card==1): ?>
 <a style="width: 100%;height: 48px;background-color: #0e9def;position: fixed;bottom: 0;text-align: center;color: white;line-height: 48px" href="/index/index/to_chouzi/f/<?php echo 'tcz'.rand(100,999).$curr_borrow['id'];  ?>">
     筹 资
 </a>
+<?php else :?>
 
+<a style="width: 100%;height: 48px;background-color: goldenrod;position: fixed;bottom: 0;text-align: center;color: white;line-height: 48px" href="/index/index/tobangka">
+    绑卡投资
+</a>
+
+<?php endif; ?>
 <script type="text/javascript">
     $(function () {
         $("#_account").trigger("click");

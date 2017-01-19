@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width,height=device-height,maximum-scale=1.0"/>
     <link href="/public/zhongchou/index/css/index.css" rel="stylesheet" type="text/css" />
-    <script  charset='utf-8' language='javascript' type='text/javascript' src="/public/zhongchou/jQuery/jquery-1.9.1.js"></script>
+    <script  charset='utf-8' language='javascript' type='text/javascript' src="/public/zhongchou/jQuery/jquery-1.11.3.js"></script>
     <link rel="stylesheet" type="text/css" href="/public/zhongchou/index/css/firstcss.css"/>
     <link rel="stylesheet" type="text/css" href="/public/zhongchou/index/css/bank.css"/>
 </head>
@@ -31,16 +31,18 @@
         var  data='money='+$("#cmoney").val()+'&code='+$('#code').val();
         $.ajax({
             type: "POST",
+            dataType:"json",
             url: "/index/topup/chongzhi",
             data: data,
             async:false,
-            success: function (msg) {
-                var data = $.parseJSON(msg);
+            success: function (data) {
+console.log(data);
                 alert(data.msg);
+                //发送失败则 重新
                 if(data.code==0){
-                    window.location.href= '/index/index/self';
+                    //
                 }else if(data.code==1){
-                    window.location.href= '/index/index/self';
+                    //
                 }
             }
         });
@@ -48,7 +50,6 @@
 
 
     function  tixianbtn(){
-        //alert($("#tmoney").val());
         var  data= 'money='+$("#tmoney").val()+'&pass='+$("#pass").val();
         $.ajax({
             type: "POST",
@@ -58,11 +59,11 @@
             success: function (msg) {
                 var data = JSON.parse(msg);
                 alert(data.msg);
+                //发送失败则 重新
                 if(data.code==0){
-                    window.location.href= '/index/index/self';
                     $("#tmoney").val(2);
                 }else  if(data.code==1){
-                    window.location.href= '/index/index/self';
+                    //
                 }
             }
         });
@@ -106,22 +107,27 @@
         //发送倒计时
         daoJiShi();
         $('#codebtn').attr('disabled','disabled');
-        var  data='money='+$("#cmoney").val()+'&codetype='+codetype;
+
         $.ajax({
             type: "POST",
-            url: "/index/topup/zhifucode",
-            data: data,
+            url: "/index/topup/zhifucode?"+'money='+$("#cmoney").val()+'&codetype='+codetype,
+            data: '',
+            dataType:"json",
             async:false,
-            success: function (msg) {
-                var data = JSON.parse(msg);
+            success: function (data) {
+
+
+                console.log(data.msg);
+                console.log(data.code);
+
                 alert(data.msg);
                 //发送失败则 走重新发送的接口
                 if(data.code==0){
-                    window.location.href= '/index/index/self';
+
                     $("#tmoney").val(2);
                     codetype=1;
                 }else  {
-                    window.location.href= '/index/index/self';
+
                 }
             }
         });
@@ -172,18 +178,21 @@
         <input id="codebtn" type="button" value="获取验证码" style="margin-top: 0" onclick="sendzhifuCode();"/>
         <br/>
         <input type="button"  onclick="chongzhibtn();" value="确定" style="width: 80%;margin-left: 10%"></input>
+        <br/>
+        <br/>
     </div>
 
     <div  id="tcontent">
-        提现金额  :
+        <p style="float: left;margin-left: 35px">提现金额  :</p>
         <input id="tmoney"  type="number" value="2" />
         <br/>
         <br/>
-        支付密码  :
+        <p style="float: left;margin-left: 35px">支付密码  :</p>
         <input id="pass"  type="password" value="" />
         <br/>
-        <input type="button" onclick="tixianbtn();" value="确定"></input>
-
+        <input type="button" onclick="tixianbtn();" value="确定" style="width: 80%;margin-left: 10%"></input>
+        <br/>
+        <br/>
 
     </div>
 </div>
@@ -216,3 +225,6 @@
 
 </body>
 </html>
+
+
+

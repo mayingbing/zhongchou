@@ -115,6 +115,65 @@ class ENC{
         return $ret;
     }
 
+
+//    public function desEncrypt($str,$key) {
+//        $iv = $key;
+//        $size = mcrypt_get_block_size ( MCRYPT_DES, MCRYPT_MODE_CBC );
+//        $str = $this->_pkcs5_pad ( $str, $size );
+//        return strtoupper( bin2hex( mcrypt_encrypt(MCRYPT_DES, $key, $str, MCRYPT_ENCRYPT, $iv ) ) );
+//    }
+//
+//    public function desDecrypt($str,$key) {
+//        $iv = $key;
+//        $strBin = $this->_hex2bin( strtolower( $str ) );
+//        $str = mcrypt_decrypt( MCRYPT_DES, $key, $strBin, MCRYPT_DECRYPT, $iv );
+//        $str = $this->_pkcs5_unpad( $str );
+//        return $str;
+//    }
+
+//    function desEncrypt($string,$key) {
+//        $cc = $string;
+////        $key = 'my secret key';
+//        $iv = '12345678';
+//
+//        $cipher = mcrypt_module_open(MCRYPT_DES,'','cbc','');
+//
+//        mcrypt_generic_init($cipher, $key, $iv);
+//        $encrypted = mcrypt_generic($cipher,$cc);
+//        mcrypt_generic_deinit($cipher);
+//
+//        mcrypt_generic_init($cipher, $key, $iv);
+//        $decrypted = mdecrypt_generic($cipher,$encrypted);
+//        mcrypt_generic_deinit($cipher);
+//
+//        echo "encrypted : ".$encrypted;
+//        echo "<br>";
+//        echo "decrypted : ".$decrypted;
+//        echo "<br>";
+//
+//
+//        return strtoupper( bin2hex($encrypted));
+//        return $encrypted;
+//    }
+
+//    function desDecrypt( $string,$key ) {
+//        $cc = $this->_hex2bin( strtolower( $string ) );
+////        $key = 'my secret key';
+//        $iv = '12345678';
+//
+//        $cipher = mcrypt_module_open(MCRYPT_DES,'','cbc','');
+//
+//        mcrypt_generic_init($cipher, $key, $iv);
+//        $decrypted = mdecrypt_generic($cipher,$string);
+//        mcrypt_generic_deinit($cipher);
+//
+//        echo "<br>";
+//        echo "decrypted : ".$decrypted;
+//        echo "<br>";
+//
+//        return $decrypted;
+//    }
+
     public function desEncrypt($str,$key) {
         $iv = $key;
         $size = mcrypt_get_block_size ( MCRYPT_DES, MCRYPT_MODE_CBC );
@@ -130,6 +189,68 @@ class ENC{
         return $str;
     }
 
+
+
+
+//    public function desEncrypt($str,$key) {
+//        $iv = $key;
+////        $size = mcrypt_get_block_size ( MCRYPT_DES, MCRYPT_MODE_CBC );
+////        $str = $this->_pkcs5_pad ( $str, $size );
+////        return strtoupper( bin2hex( mcrypt_cbc(MCRYPT_DES, $key, $str, MCRYPT_ENCRYPT, $iv ) ) );
+////        return strtoupper( bin2hex(mcrypt_decrypt ( MCRYPT_DES, $key, $str, MCRYPT_MODE_ECB, $iv ) ) );
+//        /* 打开加密算法和模式 */
+//        $td = mcrypt_module_open(MCRYPT_DES, '', MCRYPT_MODE_ECB, '');
+//        /* 创建初始向量，并且检测密钥长度。
+//             * Windows 平台请使用 MCRYPT_RAND。 */
+//        $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_DEV_RANDOM);
+//        $ks = mcrypt_enc_get_key_size($td);
+//
+//        /* 创建密钥 */
+//        $key = substr(md5('$str'), 0, $ks);
+//
+//        /* 初始化加密 */
+//        mcrypt_generic_init($td, $key, $iv);
+//
+//        /* 加密数据 */
+//        $encrypted = mcrypt_generic($td, 'This is very important data');
+//
+//
+//        /* 结束加密，执行清理工作 */
+//        mcrypt_generic_deinit($td);
+//
+//        return $encrypted;
+//
+//
+//    }
+
+//    public function desDecrypt($str,$key) {
+////        $iv = $key;
+////        $strBin = $this->_hex2bin( strtolower( $str ) );
+//////        $str = mcrypt_cbc( MCRYPT_DES, $key, $strBin, MCRYPT_DECRYPT, $iv );
+////        $str = mcrypt_decrypt ( MCRYPT_DES, $key, $strBin, MCRYPT_MODE_CBC, $iv );;
+////        $str = $this->_pkcs5_unpad( $str );
+////        return $str;
+//
+//
+//        $td = mcrypt_module_open(MCRYPT_DES, '', MCRYPT_MODE_ECB, '');
+//        /* 创建初始向量，并且检测密钥长度。
+//             * Windows 平台请使用 MCRYPT_RAND。 */
+//        $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_DEV_RANDOM);
+//
+//        /* 初始化解密模块 */
+//        mcrypt_generic_init($td, $key, $iv);
+//
+//        /* 解密数据 */
+//        $decrypted = mdecrypt_generic($td, $str);
+//
+//        /* 结束解密，执行清理工作，并且关闭模块 */
+//        mcrypt_generic_deinit($td);
+//        mcrypt_module_close($td);
+//
+//        return $decrypted;
+//
+//
+//    }
 
     // 私有方法
 

@@ -173,7 +173,7 @@ class Topup extends Controller
     function logInfomation($msg) {
         if(defined('yyd_LOG')){
             error_log(
-                sprintf("[%s]  %s\n", date("Y-m-d H:i:s"), $msg), 3, YYD_LOG);
+                sprintf("[%s]  %s\n", date("Y-m-d H:i:s"), $msg), 3, './smslog.log');
         }else {
             error_log(
                 sprintf("[%s]  %s\n", date("Y-m-d H:i:s"), $msg), 3, './smslog.log');
@@ -420,6 +420,8 @@ class Topup extends Controller
             $result = $this->sendQueryRequestTojyt($params);
             $this->logInfomation("check bank account return  -----");
             $xml = simplexml_load_string($result);
+            $this->logInfomation("check bank 2017".(string)$xml->head->resp_code[0] );
+
 
             $accountInfo["bank_card_no"] = $params["card_no"];
             $accountInfo['bind_card_id'] = (string)$xml->body->bind_card_id[0];
@@ -641,7 +643,7 @@ class Topup extends Controller
             //验证码正确  插入 绑卡数据
 
             echo "<script language='javascript'>
-                     alert('验证码正确');
+                     alert(iconv('gbk', 'UTF-8', '验证码正确'););
 
                    </script>";
 
@@ -682,6 +684,11 @@ class Topup extends Controller
     {
         $codetype = input('codetype');
         $chongzhi_money = input('money');
+
+//        $msg = iconv("gbk", "utf-8", $chongzhi_money);
+//        $res = array("code" => 0, "msg" => $msg);
+//        echo json_encode($res);
+
         if ($codetype == 0) {
             //测试发送失败
 //            $msg = iconv("gbk", "utf-8", "验证码发送失败，请稍后重试！");
@@ -700,11 +707,12 @@ class Topup extends Controller
                 $userid = Session::get("userid");
                 $usermodel = new Usermodel();
                 $bankCardUserResult = $usermodel->getBankCard($userid);
-                var_dump($bankCardUserResult);
+//                var_dump($bankCardUserResult);
                 //首次充值 记录用户个人信息  如果没有记录或者是 首次支付失败 则继续走 首次鉴权
                 if ($bankCardUserResult["status"] == -1 || $bankCardUserResult["status"] == 0) {
                     $bankmodel = new Bank_model();
                     $bankCardResult = $bankmodel->getBackRecordById($userid);
+                    $bankCardResult = $bankCardResult['0'];
                     $bankdata = array("status" => 0,
                         "user_id" => $userid,
                         "payment_id" => $tradeNo,
@@ -721,24 +729,27 @@ class Topup extends Controller
                     }
                     //成功后 去获取验证码
                     $jyttype = 0;
+                    var_dump('1111111111222211');
                     $result = $this->shimingzhifu($bankdata, $chongzhi_money, $jyttype);
-//                    var_dump($result);
+                    var_dump('111123232311111111');
                     $xml = simplexml_load_string($result);
+//                    var_dump($xml);
+                    var_dump('111111111111');
                     if ((string)$xml->head->resp_code[0] == "S0000000" && (string)$xml->body->tran_state[0] == "01") {
                         Session::set('zhifudata', $bankdata);
                         $msg = iconv("gbk", "utf-8", "验证码已发送，请注意查收！");
-                        $res = array("code" => 1, "msg" => $msg);
-                        echo json_encode($res);
+                        echo json_encode(array("code" => 1, "msg" => '验证码已发送，请注意查收！'));
+                        die;
                     } else if ((substr((string)$xml->head->resp_code[0], 0, 1) == "E" && (string)$xml->head->resp_code[0] != "E0000000")) {
                         Session::set('zhifudata', $bankdata);
                         $msg = iconv("gbk", "utf-8", "验证码发送失败，请稍后重试！");
-                        $res = array("code" => 0, "msg" => $msg);
-                        echo json_encode($res);
+                        echo json_encode(array("code" => 0, "msg" => '验证码发送失败，请稍后重试！'));
+                        die;
                     } else {
                         Session::set('zhifudata', $bankdata);
                         $msg = iconv("gbk", "utf-8", "验证码正在发送,请耐心等待！");
-                        $res = array("code" => 2, "msg" => $msg);
-                        echo json_encode($res);
+                        echo json_encode(array("code" => 2, "msg" => '验证码正在发送,请耐心等待！'));
+                        die;
                     }
 
                 } //二次充值
@@ -747,8 +758,10 @@ class Topup extends Controller
                     $bankCardUserResult['payment_id'] = $tradeNo;
                     //成功后 去获取验证码
                     $jyttype = 1;
+                    var_dump('1111133331111111');
                     $result = $this->shimingzhifu($bankCardUserResult, $chongzhi_money, $jyttype);
-//                    var_dump($result);
+                    var_dump($result);
+                    var_dump('11111114444411111');
                     $xml = simplexml_load_string($result);
 
                     if ((string)$xml->head->resp_code[0] == "S0000000" && (string)$xml->body->tran_state[0] == "01") {
@@ -807,8 +820,8 @@ class Topup extends Controller
     {
         $msg = "";
         $code = 0;//0 失败  1  成功
-        $chongzhi_money = $_POST['money'];
-        $chongzhi_code = $_POST['code'];
+        $chongzhi_money = input('money');
+        $chongzhi_code = input('code');
         if (!empty($chongzhi_money)) {
             if (is_numeric($chongzhi_money) && is_numeric($chongzhi_code)) {
 
@@ -827,12 +840,13 @@ class Topup extends Controller
                 $usermodel->insertRecordPayment($data); //插入充值记录
                 //检测是否是首次消费
                 if ($zhifudata['status'] == 0) {
-                    $this->logInfomation("pay request start-----");
+                    $this->logInfomation("pay request start1-----");
                     //成功后 去第三方 充值
                     $jyttype = 0;
                     $result = $this->chongzhijyt($zhifudata, $chongzhi_money, $chongzhi_code, $jyttype);
                     $xml = simplexml_load_string($result);
-//                    var_dump($result);
+                    var_dump($result);
+                    var_dump('1111111');
                     //die;
                     //如果成功后 更新 相关记录
                     if ((string)$xml->head->resp_code[0] == "S0000000" && (string)$xml->body->tran_state[0] == "00") {
@@ -860,7 +874,7 @@ class Topup extends Controller
                         $this->logInfomation("update bank info");
                         $zhifudata['status'] = 1;
                         $zhifudata['type'] = 1;   //更新记录
-                        //var_dump($bankdata);
+//                        var_dump($bankdata);
                         $usermodel->updateBankInfo($zhifudata);
                         $msg = (string)$xml->head->resp_desc[0];
                         $res = array("code" => 1, "msg" => $msg);
@@ -868,22 +882,27 @@ class Topup extends Controller
                         return;
                     } //失败
                     else if ((substr((string)$xml->head->resp_code[0], 0, 1) == "E" && (string)$xml->head->resp_code[0] != "E0000000")) {
-                        $msg = iconv("gbk", "utf-8", "交易失败请稍后重试");//(string)$xml->head->resp_desc[0];
-                        $res = array("code" => 0, "msg" => $msg);
-                        echo json_encode($res);
-                        return;
+                        $this->logInfomation("pay request faile1111111-----");
+
+                        $msg = iconv("gbk", "utf-8", "交易失败请稍后重试!");
+                        echo json_encode(array("code" => 0, "msg" => $msg));
                     } //处理中 不加钱 等通知 或者 主动查询
                     else {
+                        $this->logInfomation("pay request faile2222222222-----");
                         $usermodel = new Usermodel();
                         //金运通 流水号
                         $res = $usermodel->insertFlowidToRecharge(array("trade_no" => $zhifudata['payment_id'], "jytflowid" => (string)$xml->head->tran_flowid[0]));
                         //记录成功
+                        var_dump($res);
+                        var_dump('111111111222233333');
                         if ($res) {
+                            $this->logInfomation("pay request faile33333333-----");
                             $msg = iconv("gbk", "utf-8", "交易请求成功,正在审核,请耐心等待！");//(string)$xml->head->resp_desc[0];
                             $res = array("code" => 0, "msg" => $msg);
                             echo json_encode($res);
                         } else {
-                            $msg = iconv("gbk", "utf-8", "交易失败请稍后重试");//(string)$xml->head->resp_desc[0];
+                            $this->logInfomation("pay request faile4444444-----");
+                            $msg = iconv("gbk", "utf-8", "交易失败请稍后重试!!");//(string)$xml->head->resp_desc[0];
                             $res = array("code" => 0, "msg" => $msg);
                             echo json_encode($res);
                         }
@@ -891,12 +910,13 @@ class Topup extends Controller
                     }
 
                 } else {
-                    $this->logInfomation("pay request start-----");
+                    $this->logInfomation("pay request start2-----");
                     //成功后 去第三方 充值
                     $jyttype = 1;
                     $result = $this->chongzhijyt($zhifudata, $chongzhi_money, $chongzhi_code, $jyttype);
                     $xml = simplexml_load_string($result);
-//                    var_dump($result);
+                    var_dump($result);
+                    var_dump('5555555555');
                     //die;
                     //如果成功后 更新 相关记录
                     if ((string)$xml->head->resp_code[0] == "S0000000" && (string)$xml->body->tran_state[0] == "00") {
@@ -1114,7 +1134,7 @@ class Topup extends Controller
         $data = array("head" => $req_param, "body" => $req_body);
         $xml_ori = ArrayToXML::toXml($data);
 
-//        var_dump($xml_ori);
+        var_dump($xml_ori);
         // die;
         /* 4. 组织POST字段  */
         $req['merchant_id'] = $req_param['merchant_id'];
@@ -1152,14 +1172,18 @@ class Topup extends Controller
     {
         $msg = "";
         $code = 0;//0 失败  1  成功
-        $tixian_money = $_POST['money'];
-        $pass = $_POST['pass'];   //提现
+        $tixian_money = input('money');
+        $pass = input('pass');   //提现
+
+
+
         if (!empty($tixian_money)) {
             if (is_numeric($tixian_money)) {
 
                 $userid = Session::get("userid");
                 $bankmodel = new Bank_model();
                 $bankCardResult = $bankmodel->getBackRecordById($userid);
+                $bankCardResult = $bankCardResult['0'];
                 //检查交易密码
                 $usermodel = new Usermodel();
                 $paypass = $usermodel->getPayPass($userid);
@@ -1173,7 +1197,7 @@ class Topup extends Controller
                 //检查可用余额
                 $bankmodel = new Bank_model();
                 $accountResult = $bankmodel->checkUserMoney($userid);
-                //var_dump($accountResult);
+                $accountResult = $accountResult['0'];
                 if ($tixian_money <= $accountResult['balance']) {
                     //走提现逻辑
                     $accountInfo = Session::get("accountInfo");
@@ -1182,11 +1206,12 @@ class Topup extends Controller
                     //获取费率
                     $systemfeilv = $usermodel->feilv('con_account_cash_1');
                     $data['status'] = 0;
-                    $data['total'] = $tixian_money + $systemfeilv['value'] * $data['account'] * 0.01;
                     $data['account'] = $tixian_money;
+                    $data['total'] = $tixian_money + $systemfeilv['value'] * $data['account'] * 0.01;
+
                     $data['bank'] = $bankCardResult['bank_card_code'];
                     $data['bank_id'] = "";
-                    $data['nid'] = "cash_" . $_G['user_id'] . time() . rand(100, 999);
+                    $data['nid'] = "cash_" . $userid . time() . rand(100, 999);
 //                        $data['fee'] = $_G['system']['con_account_cash_1'] * $data['account'] * 0.01;
                     $data['fee'] = $systemfeilv['value'] * $data['account'] * 0.01;
                     $data['credited'] = $data['total'] - $data['fee'];

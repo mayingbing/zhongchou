@@ -12,7 +12,31 @@ class Login extends Controller{
 
     public function login()
     {
-        return $this->fetch();
+
+        if(Cookie::has('username')&&Cookie::has('password')) {
+            $curr_username = Cookie::get('username');
+            $curr_password = Cookie::get('password');
+            $curr_user = Db::query('select password,user_id from yyd_users where username ="'.$curr_username.'"');
+
+
+            if($curr_user) {
+                $curr_user = $curr_user['0'];
+
+                if ($curr_password == $curr_user['password']) {
+                    Session::set('userid', $curr_user['user_id']);
+                    Cookie::set('username', $curr_username, 3600 * 48);
+                    Cookie::set('password', $curr_password, 3600 * 48);
+                    $url = "/index/index/index";
+                    $this->redirect($url);
+                } else {
+                    return $this->fetch();
+                }
+            }
+
+
+
+        }
+            return $this->fetch();
     }
     public function zhuce()
     {
@@ -45,7 +69,7 @@ class Login extends Controller{
         }
 
         if($res['0']['code']==$verifycode){
-            Db::query('insert into yyd_users (username,password) VALUE ("'.$username.'","'.$password.'")');
+            Db::query('insert into yyd_users (username,password) VALUE ("'.$username.'","'.md5($password).'")');
             $result = Db::query('select last_insert_id()');
             $user_id = $result['0']['last_insert_id()'];
 
@@ -194,7 +218,8 @@ class Login extends Controller{
     public function quit(){
         Session::set('userid','');
         Session::set('accountInfo','');
-
+        Cookie::set('username','',60);
+        Cookie::set('password','',60);
         $url = '/index/login/login';
         $this->redirect($url);
     }

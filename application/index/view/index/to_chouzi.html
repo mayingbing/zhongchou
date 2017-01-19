@@ -86,34 +86,41 @@
 
 <form action="/index/index/invest" method="post">
 
-<div style="width: 100%;height: 50px;background-color: white;position: relative">
+
+
+
+<div style="width: 100%;line-height: 30px;text-indent: 10px;font-size: 13px;color: #939292">投资金额 : 最多 {$curr_borrow.account - $curr_borrow.borrow_account_yes} 元</div>
+   <div style="width: 100%;height: 20px"></div>
+
+<!--<div style="width: 100%;height: 50px;background-color: white;position: relative">-->
+
+    <!--<div style="width: 70px;line-height: 50px;font-size: 11px;text-align: center">支付金额</div>-->
+
+    <!--<input style="position: absolute;left: 70px;top: 5px;border: none;height: 40px;width: 260px" placeholder="0" name="zf_account"/>-->
+<!--</div>-->
+<input type="hidden" name="borrow_id" />
+
+<div style="width: 100%;line-height: 30px;text-indent: 10px;font-size: 13px;color: #939292">账户余额 : <?= $_list["a_total"] ?> 元</div>
+    <div style="width: 100%;height: 20px"></div>
+<div style="width: 100%;line-height: 30px;text-indent: 10px;font-size: 13px;color: #939292">可用余额 : <?= $_list["a_remain"] ?> 元</div>
+    <div style="width: 100%;height: 30px"></div>
+
+    <div style="width: 100%;height: 50px;background-color: white;position: relative">
 
     <div style="width: 70px;line-height: 50px;font-size: 11px;text-align: center">投资金额</div>
 
     <input style="position: absolute;left: 70px;top: 5px;border: none;height: 40px;width: 260px" placeholder="请输入金额" name="tz_account"/>
-</div>
+    </div>
 
+    <div style="width: 100%;height: 10px"></div>
+    <div style="width: 100%;height: 50px;background-color: white;position: relative">
+    <div style="width: 70px;line-height: 50px;font-size: 11px;text-align: center">交易密码</div>
 
-<div style="width: 100%;line-height: 30px;text-indent: 10px;font-size: 13px;color: #939292">投资金额 : 最多 {$curr_borrow.account - $curr_borrow.borrow_account_yes} 元</div>
+    <input style="position: absolute;left: 70px;top: 5px;border: none;height: 40px;width: 260px" placeholder="请输入交易密码" name="paypassword"/>
+    </div>
 
+    <div style="width: 100%;height: 30px"></div>
 
-<div style="width: 100%;height: 50px;background-color: white;position: relative">
-
-    <div style="width: 70px;line-height: 50px;font-size: 11px;text-align: center">支付金额</div>
-
-    <input style="position: absolute;left: 70px;top: 5px;border: none;height: 40px;width: 260px" placeholder="0" name="zf_account"/>
-</div>
-<input type="hidden" name="borrow_id" />
-
-<div style="width: 100%;line-height: 30px;text-indent: 10px;font-size: 13px;color: #939292">账户余额 :  元</div>
-
-
-
-
-
-
-
-<div style="width: 100%;height: 30px"></div>
 
 <input style="width: 90%;height: 40px;border-radius: 5px;text-align: center;line-height: 40px;color: white;font-size: 15px;background-color: #0e9def;margin-left: 5%" type="submit" value="马上投标" />
 
