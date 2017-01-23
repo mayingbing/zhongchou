@@ -85,6 +85,10 @@ class Topup extends Controller
         return $this->fetch();
     }
     public function out_money_detail_bei_page(){
+        if(Session::get('userid')==''){
+            $url="/index/login/login";
+            $this->redirect($url);
+        }
         $part = input('value');
         $params = json_decode($part, true);
         $this->assign('params',$params);
@@ -146,7 +150,8 @@ class Topup extends Controller
             $this->redirect($url);
 
         } else { // select the wechat payment
-            $data["errormsg"] = iconv("GB2312", "UTF-8", "不支持此付款方式");
+            $data["errormsg"] = "不支持此付款方式";
+            $data["errormsg"] = mb_convert_encoding($data["errormsg"],'utf-8','gbk');
             $str = "not support wechat payment--" . json_encode($data);
             $this->logInfomation($str);
 
@@ -156,6 +161,12 @@ class Topup extends Controller
         }
     }
     public function out_money_page(){
+
+        if(Session::get('userid')==''){
+            $url="/index/login/login";
+            $this->redirect($url);
+        }
+
         $part = input('value');
         $params = json_decode($part, true);
         $this->assign('params',$params);
@@ -190,7 +201,7 @@ class Topup extends Controller
         //解绑  用户信息 以及金运通绑定卡
         $usermodel = new Usermodel();
         $bankCardUserResult = $usermodel->getBankCard($userid);
-        var_dump($bankCardUserResult);
+//        var_dump($bankCardUserResult);
         if (!empty($bankCardUserResult)) {
             $jyttype = 4;
             $chongzhi_money = 0;
@@ -201,15 +212,18 @@ class Topup extends Controller
                 $usermodel->deleteBankCard($userid);
                 $bankmodel = new Bank_model();
                 $bankCardResult = $bankmodel->removeBackRecordById($userid);
-                $msg = iconv("gbk", "utf-8", "银行卡删除成功！");
+                $msg = "银行卡删除成功！";
+                $msg = mb_convert_encoding($msg,'utf-8','gbk');
                 $res = array("code" => 1, "msg" => $msg);
                 echo json_encode($res);
             } else if ((substr((string)$xml->head->resp_code[0], 0, 1) == "E" && (string)$xml->head->resp_code[0] != "E0000000")) {
-                $msg = iconv("gbk", "utf-8", "银行卡删除失败！");
+                $msg = "银行卡删除失败！";
+                $msg = mb_convert_encoding($msg,'utf-8','gbk');
                 $res = array("code" => 1, "msg" => $msg);
                 echo json_encode($res);
             } else {
-                $msg = iconv("gbk", "utf-8", "银行卡删除失败！");
+                $msg = "银行卡删除失败！";
+                $msg = mb_convert_encoding($msg,'utf-8','gbk');
                 $res = array("code" => 1, "msg" => $msg);
                 echo json_encode($res);
             }
@@ -438,7 +452,8 @@ class Topup extends Controller
 
             $params["errormsg"] = "";
             if ((string)$xml->head->resp_code[0] == "S0000000") {
-                $params["errormsg"] = iconv('GB2312', 'UTF-8', "验证码下发成功，请查收");
+                $params["errormsg"] = "验证码下发成功，请查收";
+                $params["errormsg"] = mb_convert_encoding($params["errormsg"],'utf-8','gbk');
                 $params["hasError"] = false;
             } else {
                 $params["errormsg"] = (string)$xml->head->resp_desc[0];
@@ -475,7 +490,10 @@ class Topup extends Controller
 //        var_dump($accountInfo);
     }
     public function out_money_detail_bei_token_page(){
-
+        if(Session::get('userid')==''){
+            $url="/index/login/login";
+            $this->redirect($url);
+        }
         $params = input();
         $url_back = $_SERVER['QUERY_STRING'];
 
@@ -675,7 +693,16 @@ class Topup extends Controller
               </script>";
         }
     }
-
+    public function zhifucode2(){
+        $result = '首次充值 记录用户个人信息';
+        $result = mb_convert_encoding($result,'utf-8','gbk');
+        $test=array("code" => 0, "msg" => $result);
+        foreach ( $test as $key => $value ) {
+            $test[$key] = urlencode ( $value );
+        }
+        echo urldecode ( json_encode ( $test ) );
+        die;
+    }
     /**
      *
      * 实名支付   获取验证码
@@ -729,26 +756,31 @@ class Topup extends Controller
                     }
                     //成功后 去获取验证码
                     $jyttype = 0;
-                    var_dump('1111111111222211');
                     $result = $this->shimingzhifu($bankdata, $chongzhi_money, $jyttype);
-                    var_dump('111123232311111111');
                     $xml = simplexml_load_string($result);
 //                    var_dump($xml);
-                    var_dump('111111111111');
                     if ((string)$xml->head->resp_code[0] == "S0000000" && (string)$xml->body->tran_state[0] == "01") {
                         Session::set('zhifudata', $bankdata);
-                        $msg = iconv("gbk", "utf-8", "验证码已发送，请注意查收！");
-                        echo json_encode(array("code" => 1, "msg" => '验证码已发送，请注意查收！'));
+                        $msg = "验证码已发送，请注意查收！";
+                        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+                        echo json_encode(array("code" => 1, "msg" => $msg));
                         die;
                     } else if ((substr((string)$xml->head->resp_code[0], 0, 1) == "E" && (string)$xml->head->resp_code[0] != "E0000000")) {
                         Session::set('zhifudata', $bankdata);
-                        $msg = iconv("gbk", "utf-8", "验证码发送失败，请稍后重试！");
-                        echo json_encode(array("code" => 0, "msg" => '验证码发送失败，请稍后重试！'));
-                        die;
+                        $msg = "验证码发送失败，请稍后重试！";
+                        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+
+                        $test = array("code" => 0, "msg" => $msg);
+
+                        echo json_encode ( $test );die;
+
+
+
                     } else {
                         Session::set('zhifudata', $bankdata);
-                        $msg = iconv("gbk", "utf-8", "验证码正在发送,请耐心等待！");
-                        echo json_encode(array("code" => 2, "msg" => '验证码正在发送,请耐心等待！'));
+                        $msg =  "验证码正在发送,请耐心等待！";
+                        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+                        echo json_encode(array("code" => 2, "msg" => $msg));
                         die;
                     }
 
@@ -758,17 +790,18 @@ class Topup extends Controller
                     $bankCardUserResult['payment_id'] = $tradeNo;
                     //成功后 去获取验证码
                     $jyttype = 1;
-                    var_dump('1111133331111111');
+//                    var_dump('1111133331111111');
                     $result = $this->shimingzhifu($bankCardUserResult, $chongzhi_money, $jyttype);
-                    var_dump($result);
-                    var_dump('11111114444411111');
+//                    var_dump($result);
+//                    var_dump('11111114444411111');
                     $xml = simplexml_load_string($result);
 
                     if ((string)$xml->head->resp_code[0] == "S0000000" && (string)$xml->body->tran_state[0] == "01") {
                         Session::set('zhifudata', $bankCardUserResult);
 
                         //测试发送失败
-                        $msg = iconv("gbk", "utf-8", "验证码发送失败，请稍后重试！");
+                        $msg = "验证码发送失败，请稍后重试！";
+                        $msg = mb_convert_encoding($msg,'utf-8','gbk');
                         $res = array("code" => 0, "msg" => $msg);
                         echo json_encode($res);
                         die;
@@ -778,12 +811,14 @@ class Topup extends Controller
 //                        echo json_encode($res);
                     } else if ((substr((string)$xml->head->resp_code[0], 0, 1) == "E" && (string)$xml->head->resp_code[0] != "E0000000")) {
                         Session::set('zhifudata', '');
-                        $msg = iconv("gbk", "utf-8", "验证码发送失败，请稍后重试！");
+                        $msg = "验证码发送失败，请稍后重试！";
+                        $msg = mb_convert_encoding($msg,'utf-8','gbk');
                         $res = array("code" => 0, "msg" => $msg);
                         echo json_encode($res);
                     } else {
                         Session::set('zhifudata', '');
-                        $msg = iconv("gbk", "utf-8", "验证码正在发送,请耐心等待！");
+                        $msg = "验证码正在发送,请耐心等待！";
+                        $msg = mb_convert_encoding($msg,'utf-8','gbk');
                         $res = array("code" => 2, "msg" => $msg);
                         echo json_encode($res);
                     }
@@ -798,15 +833,18 @@ class Topup extends Controller
             $xml = simplexml_load_string($result);
 //            var_dump($result);
             if ((string)$xml->head->resp_code[0] == "S0000000" && (string)$xml->body->tran_state[0] == "01") {
-                $msg = iconv("gbk", "utf-8", "验证码已发送，请注意查收！");
+                $msg =  "验证码已发送，请注意查收！";
+                $msg = mb_convert_encoding($msg,'utf-8','gbk');
                 $res = array("code" => 1, "msg" => $msg);
                 echo json_encode($res);
             } else if ((substr((string)$xml->head->resp_code[0], 0, 1) == "E" && (string)$xml->head->resp_code[0] != "E0000000")) {
-                $msg = iconv("gbk", "utf-8", "验证码发送失败，请稍后重试！");
+                $msg = "验证码发送失败，请稍后重试！";
+                $msg = mb_convert_encoding($msg,'utf-8','gbk');
                 $res = array("code" => 0, "msg" => $msg);
                 echo json_encode($res);
             } else {
-                $msg = iconv("gbk", "utf-8", "验证码正在发送,请耐心等待！");
+                $msg = "验证码正在发送,请耐心等待！";
+                $msg = mb_convert_encoding($msg,'utf-8','gbk');
                 $res = array("code" => 2, "msg" => $msg);
                 echo json_encode($res);
             }
@@ -845,8 +883,8 @@ class Topup extends Controller
                     $jyttype = 0;
                     $result = $this->chongzhijyt($zhifudata, $chongzhi_money, $chongzhi_code, $jyttype);
                     $xml = simplexml_load_string($result);
-                    var_dump($result);
-                    var_dump('1111111');
+//                    var_dump($result);
+//                    var_dump('1111111');
                     //die;
                     //如果成功后 更新 相关记录
                     if ((string)$xml->head->resp_code[0] == "S0000000" && (string)$xml->body->tran_state[0] == "00") {
@@ -877,6 +915,7 @@ class Topup extends Controller
 //                        var_dump($bankdata);
                         $usermodel->updateBankInfo($zhifudata);
                         $msg = (string)$xml->head->resp_desc[0];
+                        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
                         $res = array("code" => 1, "msg" => $msg);
                         echo json_encode($res);
                         return;
@@ -884,7 +923,8 @@ class Topup extends Controller
                     else if ((substr((string)$xml->head->resp_code[0], 0, 1) == "E" && (string)$xml->head->resp_code[0] != "E0000000")) {
                         $this->logInfomation("pay request faile1111111-----");
 
-                        $msg = iconv("gbk", "utf-8", "交易失败请稍后重试!");
+                        $msg = "交易失败请稍后重试!";
+                        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
                         echo json_encode(array("code" => 0, "msg" => $msg));
                     } //处理中 不加钱 等通知 或者 主动查询
                     else {
@@ -893,16 +933,27 @@ class Topup extends Controller
                         //金运通 流水号
                         $res = $usermodel->insertFlowidToRecharge(array("trade_no" => $zhifudata['payment_id'], "jytflowid" => (string)$xml->head->tran_flowid[0]));
                         //记录成功
-                        var_dump($res);
-                        var_dump('111111111222233333');
+//                        var_dump($res);
+//                        var_dump('111111111222233333');
                         if ($res) {
                             $this->logInfomation("pay request faile33333333-----");
-                            $msg = iconv("gbk", "utf-8", "交易请求成功,正在审核,请耐心等待！");//(string)$xml->head->resp_desc[0];
-                            $res = array("code" => 0, "msg" => $msg);
-                            echo json_encode($res);
+                            $msg = "交易请求成功,正在审核,请耐心等待！";
+//                            $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+                            //(string)$xml->head->resp_desc[0];
+
+                            $result = mb_convert_encoding($msg,'utf-8','gbk');
+                            $test=array("code" => 0, "msg" => $result);
+                            foreach ( $test as $key => $value ) {
+                                $test[$key] = urlencode ( $value );
+                            }
+                            echo urldecode ( json_encode ( $test ) );
+
+
                         } else {
                             $this->logInfomation("pay request faile4444444-----");
-                            $msg = iconv("gbk", "utf-8", "交易失败请稍后重试!!");//(string)$xml->head->resp_desc[0];
+                            $msg = "交易失败请稍后重试!!";
+                            $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+                            //(string)$xml->head->resp_desc[0];
                             $res = array("code" => 0, "msg" => $msg);
                             echo json_encode($res);
                         }
@@ -915,8 +966,8 @@ class Topup extends Controller
                     $jyttype = 1;
                     $result = $this->chongzhijyt($zhifudata, $chongzhi_money, $chongzhi_code, $jyttype);
                     $xml = simplexml_load_string($result);
-                    var_dump($result);
-                    var_dump('5555555555');
+//                    var_dump($result);
+//                    var_dump('5555555555');
                     //die;
                     //如果成功后 更新 相关记录
                     if ((string)$xml->head->resp_code[0] == "S0000000" && (string)$xml->body->tran_state[0] == "00") {
@@ -947,12 +998,15 @@ class Topup extends Controller
                         //var_dump($bankdata);
                         $usermodel->updateBankInfo($zhifudata);
                         $msg = (string)$xml->head->resp_desc[0];
+                        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
                         $res = array("code" => 1, "msg" => $msg);
                         echo json_encode($res);
                         return;
                     } //失败
                     else if ((substr((string)$xml->head->resp_code[0], 0, 1) == "E" && (string)$xml->head->resp_code[0] != "E0000000")) {
-                        $msg = iconv("gbk", "utf-8", "交易失败请稍后重试");//(string)$xml->head->resp_desc[0];
+                        $msg = "交易失败请稍后重试";
+                        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+                        //(string)$xml->head->resp_desc[0];
                         $res = array("code" => 0, "msg" => $msg);
                         echo json_encode($res);
                         return;
@@ -963,11 +1017,15 @@ class Topup extends Controller
                         $res = $usermodel->insertFlowidToRecharge(array("trade_no" =>  $zhifudata['payment_id'], "jytflowid" => (string)$xml->head->tran_flowid[0]));
                         //记录成功
                         if ($res) {
-                            $msg = iconv("gbk", "utf-8", "交易请求成功,正在审核,请耐心等待！");//(string)$xml->head->resp_desc[0];
+                            $msg = "交易请求成功,正在审核,请耐心等待！";
+                            $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+                            //(string)$xml->head->resp_desc[0];
                             $res = array("code" => 0, "msg" => $msg);
                             echo json_encode($res);
                         } else {
-                            $msg = iconv("gbk", "utf-8", "交易失败请稍后重试");//(string)$xml->head->resp_desc[0];
+                            $msg = "交易失败请稍后重试";
+                            $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+                            //(string)$xml->head->resp_desc[0];
                             $res = array("code" => 0, "msg" => $msg);
                             echo json_encode($res);
                         }
@@ -1134,7 +1192,7 @@ class Topup extends Controller
         $data = array("head" => $req_param, "body" => $req_body);
         $xml_ori = ArrayToXML::toXml($data);
 
-        var_dump($xml_ori);
+//        var_dump($xml_ori);
         // die;
         /* 4. 组织POST字段  */
         $req['merchant_id'] = $req_param['merchant_id'];
@@ -1190,7 +1248,8 @@ class Topup extends Controller
                 if (isset($paypass) && !empty($paypass)) {
                     if ($paypass['paypassword'] != md5($pass)) {
                         $msg = "交易密码填写有误";
-                        echo json_encode(array('msg' => iconv('gb2312', 'UTF-8', $msg), 'code' => $code));
+                        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+                        echo json_encode(array('msg' => $msg, 'code' => $code));
                         return;
                     }
                 }
@@ -1221,12 +1280,23 @@ class Topup extends Controller
                     if ($result > 0) {
                         $code = 1;
                         $msg = "您的提现申请已经成功提交，除工作日外预计24小时到账";
-                        echo json_encode(array('msg' => iconv('gb2312', 'UTF-8', $msg), 'code' => $code));
-                        return;
+//                        $msg=iconv("GB2312","UTF-8",$msg);
+//                        $msg=mb_convert_encoding($msg,"UTF-8","gb2312");
+
+                        $result = mb_convert_encoding($msg,'utf-8','gbk');
+                        $test=array("code" => $code, "msg" => $result);
+                        foreach ( $test as $key => $value ) {
+                            $test[$key] = urlencode ( $value );
+                        }
+                        echo urldecode ( json_encode ( $test ) );
+
+                        die;
+
                     } else {
                         $msg = array($MsgInfo[$result], "", "/?user&q=code/account/cash_new");
                         $msg = "您的提现申请提交失败,请稍后重试";
-                        echo json_encode(array('msg' => iconv('gb2312', 'UTF-8', $msg), 'code' => $code));
+                        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+                        echo json_encode(array('msg' =>  $msg, 'code' => $code));
                         return;
                     }
 //                    //走提现 接口
@@ -1256,7 +1326,8 @@ class Topup extends Controller
         } else {
             $msg = "提现金额不能为空";
         }
-        echo json_encode(array('msg' => iconv('gb2312', 'UTF-8', $msg), 'code' => $code));
+        $msg=iconv("GB2312","UTF-8//IGNORE",$msg);
+        echo json_encode(array('msg' =>  $msg, 'code' => $code));
     }
 
     /**
@@ -1407,9 +1478,9 @@ class Topup extends Controller
         $req['key_enc'] = $m->encrypt($key, 'hex');
         $req['xml_enc'] = $m->desEncrypt($xml_ori, $key);
 
-        var_dump("key ::  " . $key);
-        var_dump("req['key_enc'] ::  " . $req['key_enc']);
-        var_dump("req['xml_enc'] ::  " . $req['xml_enc']);
+//        var_dump("key ::  " . $key);
+//        var_dump("req['key_enc'] ::  " . $req['key_enc']);
+//        var_dump("req['xml_enc'] ::  " . $req['xml_enc']);
 
         /* 5. post提交到支付平台 */
         $snoopy = new Snoopy;
@@ -1424,16 +1495,16 @@ class Topup extends Controller
         $key_enc = $matches[3];
         $sign = $matches[4];
 
-        var_dump("xml_enc ::  " . $xml_enc);
-        var_dump("key_enc ::  " . $key_enc);
-        var_dump("sign ::  " . $sign);
+//        var_dump("xml_enc ::  " . $xml_enc);
+//        var_dump("key_enc ::  " . $key_enc);
+//        var_dump("sign ::  " . $sign);
 
         /* 7. 解密并验签返回报文  */
         $key = $m->decrypt($key_enc, 'hex');
         $xml = $m->desDecrypt($xml_enc, $key);
 
-        var_dump("key :: " . iconv('UTF-8', 'gbk', $key));
-        var_dump("xml :: " . $xml);
+//        var_dump("key :: " . iconv('UTF-8', 'gbk', $key));
+//        var_dump("xml :: " . $xml);
         die;
 
         if (!$m->verify($xml, $sign, 'hex'))
@@ -1673,7 +1744,7 @@ class Topup extends Controller
             "result" => $result["result"],
             "error_message" => $result["error_message"]
         );
-
+        $msg=iconv("GB2312","UTF-8//IGNORE",$reply);
         echo json_encode($reply);
 
     }
@@ -2206,7 +2277,7 @@ class Topup extends Controller
 //        var_dump("key :: ". iconv('UTF-8', 'gbk', $key));
         //var_dump("xml :: ".iconv('UTF-8', 'gbk', $xml));
 
-        var_dump($xml);
+//        var_dump($xml);
         if (!$m->verify($xml, $sign, 'hex'))
             return "--- 验签失败!\n";
         else

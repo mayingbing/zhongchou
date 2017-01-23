@@ -134,7 +134,7 @@
 
 <div id="wrap">
     <div id="slider">
-        <a target="_blank" href="#"><img style="width: 350px;height: 200px" src="/public/zhongchou/index/image/lunbo1.png" /></a>
+        <a target="_blank" href="#"><img style="width: 350px;height: 200px" src="/public/zhongchou/images/banner_02.png" /></a>
         <a target="_blank" href="#"><img style="width: 350px;height: 200px" id="second" /></a>
 
     </div>
@@ -158,19 +158,19 @@
     <!--<div style='position: relative;width: 94%;margin-left: 3%;height: 260px;background: url("<?php echo !empty($v['upimg'])?$v['upimg']:'/public/zhongchou/index/image/roomimg.png' ;?>") no-repeat;background-size: cover'>-->
 
     <?php $img = !empty($v['upimg'])?'http://91fintec.com/'.$v['upimg']: $img ?>
-    <div style='position: relative;width: 94%;margin-left: 3%;height: 260px;background: url("<?php echo $img ; ?>" ) no-repeat;background-size: cover'>
+    <div style='position: relative;width: 90%;margin-left: 5%;height: 260px;background: url("<?php echo $img ; ?>" ) no-repeat;background-size: 100% 260px'>
 
         <div style="position: absolute;top: 20px;left:0;width: 80px;height: 20px;background-image: url('/public/zhongchou/index/image/kuang.png');background-size: cover;font-size: 10px;line-height: 20px;color: white;text-indent: 3px">
             收益权众筹
         </div>
-        <div style="position: absolute;bottom: -40px;right: 15px;width: 80px;height: 80px;background-image: url('/public/zhongchou/index/image/yuan.png');background-size: cover;font-size: 10px;color: #f3b625;text-align: center;font-weight: bold;">
-            <div style="position: relative;width: 80px;line-height: 50px"><?= $v['borrow_account_scale'] ?>%</div>
-            <div style="position: relative;width: 80px;line-height: 10px">项目进度</div>
+        <div style="position: absolute;bottom: -30px;right: 15px;width: 60px;height: 60px;background-image: url('/public/zhongchou/index/image/yuan.png');background-size: cover;font-size: 14px;color: #f3b625;text-align: center;font-weight: bold;">
+            <div style="position: relative;width: 60px;line-height: 40px"><?= $v['borrow_account_scale'] ?>%</div>
+            <div style="position: relative;width: 60px;line-height: 5px;font-size: 12px">项目进度</div>
         </div>
     </div>
-    <div style="margin: 3px 0 3px 3%;color: #0e9def;font-size: 17px;font-weight: bold"><?= $v['name'] ?></div>
-    <div style="height: 20px">
-        <p style="">状态</p>
+    <div style="margin: 3px 0 3px 5%;color: #0e9def;font-size: 17px;font-weight: bold"><?= $v['name'] ?></div>
+    <div style="height: 20px;font-weight: bold;color: #505050;">
+        <p style="margin-left: 2%">状态</p>
         <p style="">已筹集:</p>
         <p style="text-indent: 3px;color: #f3b625"><?= $v['borrow_account_yes']; ?>元</p>
         <p style=""><?php echo  $v['borrow_account_scale']==100? '已完成' : '未完成' ?></p>
@@ -254,7 +254,7 @@
 
     <a href="/index/index/index" id="tabbar1" style="width: 33%;float: left;height: 49px;text-align: center;color:#a9aeb1" onclick="select_foot(1)">
         <img src="/public/zhongchou/index/image/zhongchou2.png" style="width: 40px;height: 27px;padding-top: 5px">
-        <div style="font-size: 12px;font-weight: bold;color: #0e9def">众筹</div>
+        <div style="font-size: 12px;color: #0e9def">众筹</div>
     </a>
     <a href="/index/index/faxian" id="tabbar2" style="width: 34%;float: left;height: 49px;text-align: center;color:#a9aeb1" onclick="select_foot(2)">
         <img src="/public/zhongchou/index/image/faxian.png" style="width: 40px;height: 27px;padding-top: 5px">

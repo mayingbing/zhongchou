@@ -57,15 +57,15 @@ class Login extends Controller{
         $consistent_userinfo = Db::query('select 1 from yyd_users_info where phone ="'.$phone.'"');
 
         if(!empty($consistent_user)||!empty($consistent_userinfo)){
-            $url = '/index/login/zhuce';
-            $this->redirect($url);
+            echo "<script charset='utf-8' language='javascript' type='text/javascript' > alert('已注册可直接登录');parent.location.href='/index/login/login'; </script>";
+            return;
         }
 
         $res = Db::query('select * from yyd_approve_smslog where phone ="'.$phone.'"order by addtime DESC limit 1');
 
         if(empty($res)){
-            $url = '/index/login/zhuce';
-            $this->redirect($url);
+            echo "<script charset='utf-8' language='javascript' type='text/javascript' > alert('注册失败');parent.location.href='/index/login/login'; </script>";
+            return;
         }
 
         if($res['0']['code']==$verifycode){

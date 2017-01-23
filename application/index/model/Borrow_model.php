@@ -964,13 +964,13 @@ class Borrow_model extends Model{
     {
 
         $_sql = "where 1=1 ";
-        if (self::IsExist($data['user_id']) != "") {
+        if (isset($data['user_id'])&&$data['user_id'] != "") {
             $_sql .= " and  p1.user_id = '{$data['user_id']}' ";
         }
-        if (self::IsExist($data['id']) != "") {
+        if (isset($data['id']) &&$data['id']!= "") {
             $_sql .= " and  p1.id = '{$data['id']}' ";
         }
-        if (self::IsExist($data['borrow_nid']) != "") {
+        if (isset($data['borrow_nid']) &&$data['borrow_nid']!= "") {
             $_sql .= " and  p1.borrow_nid = '{$data['borrow_nid']}' ";
         }
         $sql = "select p1.* ,p2.username,p3.username as verify_username,(p1.borrow_success_time+(p1.borrow_period*24*60*60*30)) as r_time_h from yyd_borrow as p1
@@ -1294,8 +1294,10 @@ class Borrow_model extends Model{
     {
 
         $borrow_result = self::GetOne(array("borrow_nid" => $input['borrow_nid']));
+
         $sql = "select * from yyd_users_info where user_id = '{$input['user_id']}'";
         $result = $this->db_fetch_arrays($sql);
+        $result = $result['0'];
         $_G['islock'] = $result["status"];
         $sql = "select * from yyd_users where user_id = '{$input['user_id']}'";
         $result = $this->db_fetch_array($sql);
@@ -1313,7 +1315,7 @@ class Borrow_model extends Model{
 //            echo  $_G['paypassword'];
             $msg = iconv('GB2312', 'UTF-8', "支付交易密码不正确");
         }
-        elseif ($input['dxbPWD'] != $borrow_result['pwd'] && $borrow_result['isDXB'] == 1) {
+        elseif (isset($input['dxbPWD'] )&&$input['dxbPWD'] != $borrow_result['pwd'] && $borrow_result['isDXB'] == 1) {
             //         echo "----03--------";
             $msg = iconv('GB2312', 'UTF-8', "定向标密码不正确");
         } elseif ($input['money'] == 0 || $input['money'] == '') {
@@ -1334,8 +1336,15 @@ class Borrow_model extends Model{
             $_tender['borrow_nid'] = $input['borrow_nid'];
             $_tender['user_id'] = $input['user_id'];
             $_tender['account'] = $input['money'];
-            $_tender['contents'] = $input['contents'];
-            $_tender['hongbao'] = $input['hongbao'];
+
+            if(isset($input['hongbao'])){
+                $_tender['hongbao'] = $input['hongbao'];
+            }
+
+            if(isset($input['contents'])){
+                $_tender['contents'] = $input['contents'];
+            }
+
             // hongbao come from  function UseHongbao($data= array()) _linwei_30/08/2015
 
             if ($borrow_result['is_flow'] == 1) {
@@ -1343,7 +1352,7 @@ class Borrow_model extends Model{
             }
 
             $_tender['status'] = 0;
-            $_tender['nid'] = "tender_" . $_G['user_id'] . time() . rand(10, 99);//订单号
+            $_tender['nid'] = "tender_" . $input['user_id'] . time() . rand(10, 99);//订单号
 //echo "----2--------";
             $account_result = self::GetAccountUsers(array("user_id" => $_tender['user_id']));//获取当前用户的余额
 

@@ -136,7 +136,7 @@ class Usermodel extends Model{
 
     public function AddUsersLog($data)
     {
-        var_dump($data);
+//        var_dump($data);
         $sql = "insert into yyd_users_log set addtime='" . time() . "',addip='" . $this->ip_address() . "'";
         foreach ($data as $key => $value) {
             $sql .= ",`$key` = '$value'";

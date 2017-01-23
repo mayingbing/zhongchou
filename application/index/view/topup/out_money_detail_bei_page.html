@@ -121,70 +121,164 @@
         }
 
     </script>
+
+    <style type="text/css">
+        .querytitle{
+            width: 100%;
+            height: 40px;
+            background: white;
+            border-bottom: 1px solid #f3f3f3;
+            line-height: 40px;
+            margin: 0 auto;
+        }
+        .logo{
+            width: 20px;
+            height: 20px;
+            float: left;
+            margin-left: 5%;
+            margin-top: 10px;
+        }
+        .toolleft{
+            float: left;
+            width: 35%;
+            margin-left: 3%;
+            font-size: 12px;
+            font-family: '微软雅黑';
+            color: #828282;
+        }
+        .toolmiddle{
+            float: right;
+            width: 40%;
+            margin-left: 0;
+            font-size: 8px;
+            text-align: right;
+            font-family: '微软雅黑';
+            color:  #bebebe;
+        }
+
+
+
+    </style>
+
 </head>
-<body>
+<body style="background-color: #f8f8f8">
 <div class="header_91">
-    <p class="title">  <?php if($params['type'] == '0'){echo("支付信息");}else{echo("绑定信息");}?> </p>
+    <p class="title" >  <?php if($params['type'] == '0'){echo("支付信息");}else{echo("绑定信息");}?> </p>
 </div>
 <div style="width:150px; margin:30px auto 10px auto;">
 	<img src="/public/zhongchou/images/zf_logo.png" width="140" height="120px" alt="" />
 </div>
-<div class="out_money_content">
-    <form  method="post" id="paymentform" action ="<?= $params['actionUrl']; ?>" >
-        <?php if($params['type'] == '0'){?>
-        <?php }?>
-        <div id="payInfoContainer" style="<?php if ($params['status'] == '1' ){?> display: none; <?php } else {?> diplay:block; <?php }?>">
 
-        	<div class="out_block">
-                <label for="bankcode">支付银行&nbsp;</label>
-                <select  name="bankcode"  style="height:30px; width:150px; border-radius:5px; border:2px #88C8FF dotted; ">
-                    <option value="中国工商银行"> 中国工商银行</option>
-                    <option value="中国农业银行"> 中国农业银行</option>
-                    <option value="中国建设银行"> 中国建设银行</option>
-                    <option value="中国银行">中国银行 </option>
-                    <option value="中国邮政储蓄银行"> 中国邮政储蓄银行</option>
-                    <option value="招商银行"> 招商银行</option>
-                    <option value="兴业银行"> 兴业银行</option>
-                    <option value="中国光大银行"> 中国光大银行</option>
-                    <option value="广发银行"> 广发银行</option>
-                    <option value="平安银行">平安银行 </option>
-                    <option value="中国民生银行"> 中国民生银行</option>
-                    <option value="浦发银行">浦发银行</option>
-                    <option value="中信银行"> 中信银行</option>
-                    <option value="上海银行"> 上海银行</option>
-                    <option value="北京银行"> 北京银行</option>
-                    <option value="交通银行"> 交通银行</option>
-                    <option value="兰州银行"> 兰州银行</option>
-                    <option value="华夏银行">华夏银行 </option>
-                    <option value="济宁银行">济宁银行 </option>
-                </select>
-            </div>
+<form  method="post" id="paymentform" action ="<?= $params['actionUrl']; ?>" >
+    <?php if($params['type'] == '0'){?>
+    <?php }?>
 
-            <div class="out_block">
-                <label for="realname">姓<span style="margin:14px;"></span>名&nbsp;</label>
-                <input name="realname" type="text"  value ='<?= isset($params["real_name"])?$params["real_name"]:""; ?>' id="realname" class="text_sty"/>
-            </div>
-            <div class="out_block">
-                <label for="cardno">银行卡号&nbsp;</label>
-                <input name="cardno" type="text"   id="cardno"  value ='<?= isset($params["card_no"])?$params["card_no"]:""; ?>' onkeyup="return ValidateNumber(value)" class="text_sty"/>
-            </div>
-            <div class="out_block">
-                <label for="certno">身份证号&nbsp;</label>
-                <input name="certno"   id="certno"  value ='<?= isset($params["cert_no"])?$params["cert_no"]:""; ?>' onkeyup="return ValidateNumber(value)" class="text_sty"/>
-            </div>
+<div id="payInfoContainer" style="width: 100%;<?php if ($params['status'] == '1' ){?> display: none; <?php } else {?> diplay:block; <?php }?>">
 
-            <div class="out_block">
-                <label for="cardbindmobilephoneno">银行预留手机号&nbsp;</label>
-                <input name="cardbindmobilephoneno" type="text"  value ='<?= isset($params["card_bind_mobile_phone_no"])?$params["card_bind_mobile_phone_no"]:""; ?>' id="cardbindmobilephoneno" placeholder="必须是银行卡的绑定手机" onkeyup="return ValidateNumber(value)" style="width:140px;" class="text_sty" />
+    <a style=" text-decoration:none; color:#9d9d9d" href="#">
+        <div class="querytitle">
+            <div class="logo" style="background: url('/public/zhongchou/index/image/zhenshixingming_03.png'); background-size: cover;"></div>
+            <div class="toolleft">
+                <div class="out_block">
+                    <label for="realname"></label>
+                    <input name="realname" type="text"  value ='<?= isset($params["real_name"])?$params["real_name"]:""; ?>' id="realname" class="text_sty" placeholder="真实姓名"/>
+                </div>
             </div>
-            <input name="usedefault" type="hidden" id="usedefault" value ='<?= isset($params["status"])?$params["status"]:""; ?>' />
-
+            <div class="toolmiddle">
+            </div>
         </div>
+    </a>
+    <a style=" text-decoration:none; color:#9d9d9d" href="#">
+        <div class="querytitle">
+            <div class="logo" style="background: url('/public/zhongchou/index/image/shenfenzheng_03.png'); background-size: cover;"></div>
+            <div class="toolleft">
+                <div class="out_block">
+                    <label for="certno"></label>
+                    <input name="certno"   id="certno"  value ='<?= isset($params["cert_no"])?$params["cert_no"]:""; ?>' onkeyup="return ValidateNumber(value)" class="text_sty" placeholder="身份证号"/>
+                </div>
+            </div>
+
+            <div class="toolmiddle">
+
+            </div>
+        </div>
+    </a>
+    <a style=" text-decoration:none; color:#9d9d9d" href="#">
+        <div class="querytitle">
+            <div class="logo" style="background: url('/public/zhongchou/index/image/ka_03.png'); background-size: cover;"></div>
+            <div class="toolleft">
+                <div class="out_block">
+                    <label for="bankcode"></label>
+                    <select  name="bankcode"  style="height:30px; width:150px;  ">
+                        <option value="中国工商银行"> 中国工商银行</option>
+                        <option value="中国农业银行"> 中国农业银行</option>
+                        <option value="中国建设银行"> 中国建设银行</option>
+                        <option value="中国银行">中国银行 </option>
+                        <option value="中国邮政储蓄银行"> 中国邮政储蓄银行</option>
+                        <option value="招商银行"> 招商银行</option>
+                        <option value="兴业银行"> 兴业银行</option>
+                        <option value="中国光大银行"> 中国光大银行</option>
+                        <option value="广发银行"> 广发银行</option>
+                        <option value="平安银行">平安银行 </option>
+                        <option value="中国民生银行"> 中国民生银行</option>
+                        <option value="浦发银行">浦发银行</option>
+                        <option value="中信银行"> 中信银行</option>
+                        <option value="上海银行"> 上海银行</option>
+                        <option value="北京银行"> 北京银行</option>
+                        <option value="交通银行"> 交通银行</option>
+                        <option value="兰州银行"> 兰州银行</option>
+                        <option value="华夏银行">华夏银行 </option>
+                        <option value="济宁银行">济宁银行 </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="toolmiddle">
+            </div>
+        </div>
+    </a>
+
+
+    <a style=" text-decoration:none; color:#9d9d9d" href="#">
+        <div class="querytitle">
+            <div class="logo" style="background: url('/public/zhongchou/index/image/shuru_03.png'); background-size: cover;"></div>
+            <div class="toolleft">
+                <div class="out_block">
+                    <label for="cardno"></label>
+                    <input name="cardno" type="text"   id="cardno"  value ='<?= isset($params["card_no"])?$params["card_no"]:""; ?>' onkeyup="return ValidateNumber(value)" class="text_sty" placeholder="银行卡号"/>
+                </div>
+            </div>
+            <div class="toolmiddle"></div>
+        </div>
+    </a>
+    <div style="width: 95%;height: 25px;border-bottom: 1px solid #f3f3f3; font-size: 12px;line-height: 25px;margin-left: 5%">限额 : 单笔 元 , 单日 元</div>
+    <a style=" text-decoration:none; color:#9d9d9d" href="#">
+        <div class="querytitle">
+            <div class="logo" style="background: url('/public/zhongchou/index/image/shouji_03.png'); background-size: cover;"></div>
+            <div class="toolleft">
+                <div class="out_block">
+                    <label for="cardbindmobilephoneno"></label>
+                    <input name="cardbindmobilephoneno" type="text"  value ='<?= isset($params["card_bind_mobile_phone_no"])?$params["card_bind_mobile_phone_no"]:""; ?>' id="cardbindmobilephoneno" placeholder="必须是银行卡的绑定手机" onkeyup="return ValidateNumber(value)" style="width:140px;" class="text_sty"/>
+                </div>
+            </div>
+
+            <div class="toolmiddle">
+
+            </div>
+        </div>
+    </a>
+
+
+    <input name="usedefault" type="hidden" id="usedefault" value ='<?= isset($params["status"])?$params["status"]:""; ?>' />
+
+    </div>
+
+
 
         <div id="display"></div>
         <div class="account_content">
             <div class="invests" id="smsbutton" style="<?php if ($params['status'] == "1" && $type=="1" ){?> display: none; <?php } else {?> diplay:block; <?php }?>">
-                <input value="获取验证码"  class="button tuichu" type="button" onclick="return checkInputValue()">
+                <input value="获取验证码" style="background-color: #0e9def;border-radius: 3px" class="button tuichu" type="button" onclick="return checkInputValue()">
             </div>
         </div>
 
@@ -200,7 +294,7 @@
 
     </form>
 
-</div>
+
 
 </body>
 </html>

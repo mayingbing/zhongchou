@@ -3,22 +3,25 @@ namespace app\index\controller;
 
 use think\Controller;
 use think\Db;
-use app\index\controller\Base;
 use app\index\model\Bank_model as Bank_model;
 use app\index\model\Borrow_model;
 use think\Session;
 use app\index\model\Raise_model;
-class Index extends Base
+class Index extends Controller
 {
 
-
+    public function base(){
+        if(Session::get('userid')==''){
+            $url="/index/login/login";
+            $this->redirect($url);
+        }
+    }
 
     public function index()
     {
 
 
         $time = time()-3600*24*50;
-        $time = 0;
 
         $img = '/public/zhongchou/index/image/roomimg.png';
         $all_borrow = Db::query('select id ,addtime,borrow_account_scale,upimg,name,borrow_account_yes from yyd_borrow where borrow_end_time >="'.$time.'" order by addtime desc');
@@ -31,6 +34,7 @@ class Index extends Base
     }
     public function self()
     {
+        self::base();
         $userid = Session::get('userid');
         $borrow_model = new Borrow_model();
         $input['user_id']=$userid;
@@ -61,6 +65,7 @@ class Index extends Base
     }
     public function tixian()
     {
+        self::base();
         $userid = Session::get('userid');
         $bankmodel = new Bank_model();
         $bankCardResult = array();
@@ -97,6 +102,7 @@ class Index extends Base
     }
     public function set()
     {
+        self::base();
         $userid = Session::get('userid');
         $bankmodel = new Bank_model();
         $bankCardResult = array();
@@ -118,6 +124,7 @@ class Index extends Base
     }
     public function bangka()
     {
+        self::base();
         $userid = Session::get('userid');
         $bankmodel = new Bank_model();
         $bankCardResult = array();
@@ -153,6 +160,7 @@ class Index extends Base
     }
     public function setpaypass()
     {
+        self::base();
         $userid = Session::get('userid');
 
         $phone = input('phone');
@@ -179,6 +187,7 @@ class Index extends Base
 
     public function set_paypassword()
     {
+        self::base();
         $userid = Session::get('userid');
 
         $res = Db::query('select bind_mobile from yyd_user_bankcard where user_id ='.$userid);
@@ -208,15 +217,21 @@ class Index extends Base
     {
 
         $userid = Session::get('userid');
-        $bankmodel = new Bank_model();
-        $bankCardResult = array();
-        $bankCardResult = $bankmodel->getBackRecordById($userid);
-
         $is_card = 0;
-        //如果有绑定的卡记录
-        if (!empty($bankCardResult) && isset($bankCardResult)) {
-            $is_card=1;
+        if($userid){
+            $bankmodel = new Bank_model();
+            $bankCardResult = array();
+            $bankCardResult = $bankmodel->getBackRecordById($userid);
+            //如果有绑定的卡记录
+            if (!empty($bankCardResult) && isset($bankCardResult)) {
+                $is_card=1;
+            }
         }
+
+
+
+
+
 
 
         $img = '/public/zhongchou/index/image/tutu_02.png';
@@ -236,14 +251,11 @@ class Index extends Base
     }
     public function to_chouzi()
     {
-
+        self::base();
         $from = input('f');
         $borrow_id = substr($from,6);
         $curr_borrow = Db::query('select * from yyd_borrow where id = '.$borrow_id);
         $curr_borrow = $curr_borrow['0'];
-
-
-
 
         $userid = Session::get('userid');
         $borrow_model = new Borrow_model();
@@ -254,40 +266,68 @@ class Index extends Base
         //可用余额
         $_list["a_remain"]=$borrow_model->IsExist($result["balance"])?$result["balance"]:0;
 
-
+        $borrow_nid = $curr_borrow['borrow_nid'];
         $this->assign('_list',$_list);
 
         $this->assign('borrow_id',$borrow_id);
+        $this->assign('borrow_nid',$borrow_nid);
         $this->assign('curr_borrow',$curr_borrow);
         return $this->fetch();
     }
 
     public function invest()
     {
-
-
-
-
-
+        self::base();
         $userid = Session::get('userid');
 
-        $tz_account = input('tz_account');
-        $borrow_id = input('borrow_id');
+        $input['user_id'] =  $userid;
+        $input['money'] = input('tz_account');
+        $input['paypassword'] = input('paypassword');
+
+        $input['borrow_nid'] = input('borrow_id');
+
+        $input['query_type'] = "tfgs_coutent";
+        $input['is_auto'] = 1;
+
+        $input['Second_limit_money'] ="";
+        $input['flow_count']="";
 
         $bankmodel = new Bank_model();
         $bankCardResult = array();
         $bankCardResult = $bankmodel->getBackRecordById($userid);
-
 
         //如果有绑定的卡记录
         if (!empty($bankCardResult) && isset($bankCardResult)) {
             $bankCardResult = $bankCardResult['0'];
             //保存信息 到session
             Session::set('accountInfo', $bankCardResult);
-            //显示绑卡信息
-            $bankCardResult['bank_card_no'] = '****  ****  ****  ' . substr($bankCardResult['bank_card_no'], -4, 4);
-            $url = "/index/index/acount";
-            $this->redirect($url,$bankCardResult);
+
+            $borrowmodel = new Borrow_model;
+            $result =  $borrowmodel->tenderNow($input);
+
+
+
+            $data = array();
+            if($result == 'success'){
+                $data["status"] =$result;
+                $data["url"]= "/qylwap/showmsg/index/title".urlencode("投资信息")."/status/".urlencode("恭喜你，你已投资成功");
+                $msg = iconv('gbk','utf-8','恭喜你，你已投资成功');
+                echo "<script charset='utf-8' language='javascript' type='text/javascript' > alert(".$msg.");parent.location.href='/index/index/self'; </script>";
+                return;
+
+            }else{
+                $data["status"] ="fail";
+                $data["reason"] =$result;
+
+                $msg = iconv('gbk','utf-8','投资失败，原因:');
+                echo "<script charset='utf-8' language='javascript' type='text/javascript' > alert('".$msg."');parent.location.href='/index/index/self'; </script>";
+                return;
+
+            }
+
+
+
+
         } //去绑卡
         else {
 
@@ -306,6 +346,35 @@ class Index extends Base
     }
 
 
+    public function invest2()
+    {
+        $userid = Session::get('userid');
+        $tz_account = input('tz_account');
+        $borrow_id = input('borrow_id');
+        $bankmodel = new Bank_model();
+        $bankCardResult = array();
+        $bankCardResult = $bankmodel->getBackRecordById($userid);
+        //如果有绑定的卡记录
+        if (!empty($bankCardResult) && isset($bankCardResult)) {
+            $bankCardResult = $bankCardResult['0'];
+            //保存信息 到session
+            Session::set('accountInfo', $bankCardResult);
+            //显示绑卡信息
+            $bankCardResult['bank_card_no'] = '****  ****  ****  ' . substr($bankCardResult['bank_card_no'], -4, 4);
+            $url = "/index/index/acount";
+            $this->redirect($url,$bankCardResult);
+        } //去绑卡
+        else {
+            $params['actionUrl'] =  urlencode("/index/topup/beiTopUpStep3SmsVerify");
+            $params['status'] =  0;
+            $params['type'] =  0;
+            $json_arr = json_encode($params);
+            $url = "/index/topup/out_money_detail_bei_page?value=$json_arr";
+            $this->redirect($url);
+        }
+    }
+
+
 
     public function faxian()
     {
@@ -313,6 +382,7 @@ class Index extends Base
     }
     public function jiaoyijilu()
     {
+        self::base();
         $userid = Session::get('userid');
 
         $res = Db::query('select a.remark,a.addtime,a.money from yyd_account_recharge a where user_id = "'.$userid.'"'.'and status = 1 order by addtime desc limit 20');

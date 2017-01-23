@@ -1,17 +1,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>91众筹</title>
+    <title>投房宝</title>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
     <meta name="viewport"
           content="width=device-width,height=device-height,maximum-scale=1.0"/>
     <link href="/public/zhongchou/index/css/index.css" rel="stylesheet" type="text/css" />
+
+    <link href="/public/zhongchou/index/css/demo.css" rel="stylesheet" type="text/css" />
+    <link href="/public/zhongchou/index/css/loaders.css" rel="stylesheet" type="text/css" />
     <script  charset='utf-8' language='javascript' type='text/javascript' src="/public/zhongchou/jQuery/jquery-1.11.3.js"></script>
     <link rel="stylesheet" type="text/css" href="/public/zhongchou/index/css/firstcss.css"/>
     <link rel="stylesheet" type="text/css" href="/public/zhongchou/index/css/bank.css"/>
 </head>
 
 <script>
+
+    function show_mask(){
+        document.getElementById("loadimg").style.display = 'block';
+    }
+    function hide_mask(){
+        document.getElementById("loadimg").style.display = 'none';
+    }
+
     function jiebang(){
         var  data;
         $.ajax({
@@ -28,6 +39,7 @@
     }
 
     function  chongzhibtn(){
+        show_mask();
         var  data='money='+$("#cmoney").val()+'&code='+$('#code').val();
         $.ajax({
             type: "POST",
@@ -36,7 +48,19 @@
             data: data,
             async:false,
             success: function (data) {
-console.log(data);
+                hide_mask();
+                console.log(data);
+                alert(data.msg);
+                //发送失败则 重新
+                if(data.code==0){
+                    //
+                }else if(data.code==1){
+                    //
+                }
+            },
+            error:function(data){
+                console.log(data);
+                hide_mask();
                 alert(data.msg);
                 //发送失败则 重新
                 if(data.code==0){
@@ -50,6 +74,7 @@ console.log(data);
 
 
     function  tixianbtn(){
+        show_mask();
         var  data= 'money='+$("#tmoney").val()+'&pass='+$("#pass").val();
         $.ajax({
             type: "POST",
@@ -57,7 +82,17 @@ console.log(data);
             data: data,
             async:false,
             success: function (msg) {
-                var data = JSON.parse(msg);
+                hide_mask();
+                alert(data.msg);
+                //发送失败则 重新
+                if(data.code==0){
+                    $("#tmoney").val(2);
+                }else  if(data.code==1){
+                    //
+                }
+            },
+            error:function(data){
+                hide_mask();
                 alert(data.msg);
                 //发送失败则 重新
                 if(data.code==0){
@@ -101,13 +136,12 @@ console.log(data);
         };
         setTimeout('daoJiShi()',1000);
     }
-
     var  codetype=0;
     function  sendzhifuCode(){
+        show_mask();
         //发送倒计时
         daoJiShi();
         $('#codebtn').attr('disabled','disabled');
-
         $.ajax({
             type: "POST",
             url: "/index/topup/zhifucode?"+'money='+$("#cmoney").val()+'&codetype='+codetype,
@@ -115,25 +149,27 @@ console.log(data);
             dataType:"json",
             async:false,
             success: function (data) {
-
-
-                console.log(data.msg);
-                console.log(data.code);
-
+                hide_mask();
                 alert(data.msg);
                 //发送失败则 走重新发送的接口
                 if(data.code==0){
-
                     $("#tmoney").val(2);
                     codetype=1;
                 }else  {
-
+                }
+            },
+            error:function(data){
+                hide_mask();
+                alert(data.msg);
+                //发送失败则 走重新发送的接口
+                if(data.code==0){
+                    $("#tmoney").val(2);
+                    codetype=1;
+                }else  {
                 }
             }
         });
     }
-
-
 </script>
 
 <body>
@@ -170,8 +206,31 @@ console.log(data);
     <div class="bankbtn" onclick="tixian();">
         提现
     </div>
+
+
+    <div style="width: 100%;height: 30px"></div>
+    <div style="position: fixed;top: 0;bottom: 0;width: 100%;background-color: grey;opacity: 0.3;display: none;" id="loadimg">
+
+        <div style="width: 100%;height: 270px"></div>
+        <div style="width: 30%;margin: 0 auto;">
+            <div class="loader" style="margin: 0 auto">
+                <div class="loader-inner pacman" style="margin: 0 auto">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
     <div  id="ccontent">
-        <p style="float: left;margin-left: 35px">充值金额  :</p>
+        <p style="float: left;margin-left: 35px;color: black">充值金额  :</p>
         <input id="cmoney"  type="number" value="2" />
         <br/>  <br/>
         <input id="code"  type="number" placeholder="输入验证码" style="float: left;margin-left: 35px;margin-top: 5px;margin-right: 5px"/>

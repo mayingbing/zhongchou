@@ -111,7 +111,8 @@
             data: '',
             async: false,
             success: function (obj) {
-
+console.log(obj);
+                alert(obj.msg);
                 if(obj.code==0){
                     document.getElementById("is_ok").value = obj.msg;
                     document.getElementById("is_ok").style.display='block';
