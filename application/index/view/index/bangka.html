@@ -179,8 +179,9 @@
     <a style="width: 20%;height:48px;float: left;" href="/index/index/set">
         <img src="/public/zhongchou/index/image/fanhui_03.png" alt="返回" style="width: 22px;height: 20px;margin: 14px 0px 14px 13px"/>
     </a>
-    <div style="width: 60%;float: left;text-align: center;line-height: 48px;color:white;font-size: 18px">绑定银行卡</div>
 
+    <div style="width: 60%;float: left;text-align: center;line-height: 48px;color:white;font-size: 18px">绑定银行卡</div>
+    <div style="width: 20%;float: right;text-align: center;line-height: 48px;font-size: 14px" onclick="jiebang();">解绑</div>
 </div>
 
 <div style="width: 100%;height: 50px"></div>
@@ -188,24 +189,39 @@
 
 
 <?php if(!empty($bankCardResult['bank_card_no'])): ?>
-<div class="header_91">
-    <p class="title">支付方式 </p>
-</div>
-
+<!--<div class="header_91">-->
+    <!--<p class="title">支付方式 </p>-->
+<!--</div>-->
+<div style="width: 100%;height: 60px"></div>
 <div class="out_bank_content">
-    <span>绑定卡号</span>
-    <p id="card_no">
-        <?= $bankCardResult['bank_card_no'] ?></p>
+    <!--<span>招商银行<span style="font-size: 10px;margin-left: 5px">限额:单笔5万元 , 单日50万元</span></span>-->
+    <!--<p id="card_no">-->
+        <!--<?= $bankCardResult['bank_card_no'] ?>-->
 
-    <div class="bankbtn" onclick="jiebang();">
-        解绑银行卡
+
+    <!--</p>-->
+
+    <div style="width: 80%;height: 130px;background-color: white;margin-left: 10%;border-radius: 10px">
+
+        <div style="width: 30%;height: 130px;float: left ;" ><div style="margin: 0px auto;width: 40px;height: 40px"><img src="/public/zhongchou/images/zhongxin_03.png" alt="logo" style="width: 40px;height: 40px;margin-top: 45px"/></div></div>
+        <div style="width: 69%;height: 130px;float: right;font-size: 12px">
+            <div style="color: #5b5b5b;height: 30px;font-size: 12px;margin-top: 25px"><?= $bankCardResult['bank_card_code'] ?></div>
+            <div style="color: #a5a5a5;height: 30px;font-size: 10px"><?= $bankCardResult['bank_card_no'] ?></div>
+            <div style="color: #a5a5a5;height: 30px;font-size: 10px">限额:单笔5万元 , 单日50万元</div>
+        </div>
+
     </div>
-    <div class="bankbtn" onclick="chongzhi();">
-        充值
-    </div>
-    <div class="bankbtn" onclick="tixian();">
-        提现
-    </div>
+
+
+    <!--<div class="bankbtn" onclick="jiebang();">-->
+        <!--解绑银行卡-->
+    <!--</div>-->
+    <!--<div class="bankbtn" onclick="chongzhi();">-->
+        <!--充值-->
+    <!--</div>-->
+    <!--<div class="bankbtn" onclick="tixian();">-->
+        <!--提现-->
+    <!--</div>-->
 
 
     <div style="width: 100%;height: 30px"></div>

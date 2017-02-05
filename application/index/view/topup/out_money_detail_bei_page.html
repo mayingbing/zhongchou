@@ -156,19 +156,28 @@
             color:  #bebebe;
         }
 
-
-
+        input{
+            border: none;
+            outline: none;
+        }
+        .choose_bank{
+            border: none;
+            background-color: white;
+            color: #a5a5a5;
+        }
     </style>
 
 </head>
 <body style="background-color: #f8f8f8">
-<div class="header_91">
-    <p class="title" >  <?php if($params['type'] == '0'){echo("支付信息");}else{echo("绑定信息");}?> </p>
+<div class="header_91" style="height: 44px">
+    <p class="title" style="line-height: 44px;font-size: 18px;border-bottom: 1px solid #bcbcbc">  <?php if($params['type'] == '0'){echo("支付信息");}else{echo("绑定信息");}?> </p>
 </div>
-<div style="width:150px; margin:30px auto 10px auto;">
-	<img src="/public/zhongchou/images/zf_logo.png" width="140" height="120px" alt="" />
-</div>
+<div style="width:65px; margin:10px auto 0px auto;">
+	<img src="/public/zhongchou/images/ka_03(1).png" width="60" height="60" alt="" />
 
+</div>
+<p style="width: 60%;margin-left: 20%;font-size: 13px;color: #9b9b9b;line-height: 20px;text-align: center">请绑定银行卡,该银行卡是您在91众筹平台唯一的银行卡</p>
+<!--<div style="width: 100%;height: 20px;background-color: white;"></div>-->
 <form  method="post" id="paymentform" action ="<?= $params['actionUrl']; ?>" >
     <?php if($params['type'] == '0'){?>
     <?php }?>
@@ -209,7 +218,7 @@
             <div class="toolleft">
                 <div class="out_block">
                     <label for="bankcode"></label>
-                    <select  name="bankcode"  style="height:30px; width:150px;  ">
+                    <select  name="bankcode" class="choose_bank" style="height:30px; width:150px;  ">
                         <option value="中国工商银行"> 中国工商银行</option>
                         <option value="中国农业银行"> 中国农业银行</option>
                         <option value="中国建设银行"> 中国建设银行</option>
@@ -251,7 +260,7 @@
             <div class="toolmiddle"></div>
         </div>
     </a>
-    <div style="width: 95%;height: 25px;border-bottom: 1px solid #f3f3f3; font-size: 12px;line-height: 25px;margin-left: 5%">限额 : 单笔 元 , 单日 元</div>
+    <div style="width: 95%;height: 25px;border-bottom: 1px solid #f3f3f3; font-size: 12px;line-height: 25px;margin-left: 5% ;color: #a5a5a5">限额 : 单笔 元 , 单日 元</div>
     <a style=" text-decoration:none; color:#9d9d9d" href="#">
         <div class="querytitle">
             <div class="logo" style="background: url('/public/zhongchou/index/image/shouji_03.png'); background-size: cover;"></div>
