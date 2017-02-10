@@ -9,19 +9,15 @@ use app\index\model\Sms as SmsModel;
 
 class Login extends Controller{
 
-
     public function login()
     {
-
         if(Cookie::has('username')&&Cookie::has('password')) {
             $curr_username = Cookie::get('username');
             $curr_password = Cookie::get('password');
             $curr_user = Db::query('select password,user_id from yyd_users where username ="'.$curr_username.'"');
 
-
             if($curr_user) {
                 $curr_user = $curr_user['0'];
-
                 if ($curr_password == $curr_user['password']) {
                     Session::set('userid', $curr_user['user_id']);
                     Cookie::set('username', $curr_username, 3600 * 48);
@@ -32,11 +28,16 @@ class Login extends Controller{
                     return $this->fetch();
                 }
             }
-
-
-
         }
-            return $this->fetch();
+         //哪个页面跳过来的
+        $from = '';
+
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            $from = $_SERVER['HTTP_REFERER'];
+        }
+
+        $this->assign('from',$from);
+        return $this->fetch();
     }
     public function zhuce()
     {
@@ -122,7 +123,14 @@ class Login extends Controller{
     public function dologin(){
 
         $username = input('username');
+        $from = input('from');
 
+
+        $url = '/index/index/index';
+
+        if(!empty($from)){
+            $url = $from;
+        }
         $consistent_user = Db::query('select * from yyd_users where username ="'.$username.'"');
 
         if(!empty($consistent_user)){
@@ -133,7 +141,7 @@ class Login extends Controller{
                 Session::set('userid',$consistent_user['user_id']);
                 Cookie::set('username',$consistent_user['username'],3600*48);
                 Cookie::set('password',$consistent_user['password'],3600*48);
-                $url = "/index/index/index";
+
                 $this->redirect($url);
                 return;
             }else{

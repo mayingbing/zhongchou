@@ -17,6 +17,18 @@ class Index extends Controller
         }
     }
 
+    public function test($n=7){
+
+        if($n==1)
+            return 1;
+        if($n==2)
+            return 1;
+
+        if($n>=3){
+            return $this->test($n-1)+$this->test($n-2);
+        }
+
+    }
     public function index()
     {
 
@@ -24,7 +36,7 @@ class Index extends Controller
         $time = time()-3600*24*50;
 
         $img = '/public/zhongchou/index/image/roomimg.png';
-        $all_borrow = Db::query('select id ,addtime,borrow_account_scale,upimg,name,borrow_account_yes from yyd_borrow where borrow_end_time >="'.$time.'" order by addtime desc');
+        $all_borrow = Db::query('select id ,addtime,borrow_account_scale,upimg,name,borrow_account_yes from yyd_borrow where borrow_end_time >="'.$time.'"and status=3 order by addtime desc');
 
 
         $this->assign('all_borrow',$all_borrow);
@@ -63,6 +75,19 @@ class Index extends Controller
     {
         return $this->fetch();
     }
+    public function helpcenter()
+    {
+        return $this->fetch();
+    }
+    public function contact_us()
+    {
+        return $this->fetch();
+    }
+    public function wd()
+    {
+        return $this->fetch();
+    }
+
     public function tixian()
     {
         self::base();

@@ -91,6 +91,17 @@ class Topup extends Controller
         }
         $part = input('value');
         $params = json_decode($part, true);
+
+        //哪个页面跳过来的
+        $from = '';
+
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            $from = $_SERVER['HTTP_REFERER'];
+        }
+
+        $this->assign('from',$from);
+
+
         $this->assign('params',$params);
         return $this->fetch();
     }
