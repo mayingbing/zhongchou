@@ -17,15 +17,14 @@ class Index extends Controller
         }
     }
 
-    public function test($n=7){
+    public function test(){
 
-        if($n==1)
-            return 1;
-        if($n==2)
-            return 1;
+        $a = NULL;
 
-        if($n>=3){
-            return $this->test($n-1)+$this->test($n-2);
+        if(isset($a)){
+            echo 11;
+        }else{
+            echo 22;
         }
 
     }
@@ -71,6 +70,20 @@ class Index extends Controller
     {
         return $this->fetch();
     }
+    public function tender()
+    {
+        self::base();
+        $userid = Session::get('userid');
+        $res = Db::query('select a.account,a.addtime,b.name from yyd_borrow_tender a inner join yyd_borrow b on a.borrow_nid = b.borrow_nid  AND a.user_id = "'.$userid.'" order by a.borrow_nid DESC');
+//var_dump($res);
+//        if(!empty($res)&& is_array($res)){
+//            $res = $res['0'];
+//        };
+
+        $this->assign("res",$res);
+        return $this->fetch();
+    }
+
     public function acount()
     {
         return $this->fetch();
@@ -133,6 +146,14 @@ class Index extends Controller
         $bankCardResult = array();
         $bankCardResult = $bankmodel->getBackRecordById($userid);
 
+
+        $res = Db::query('select phone from yyd_users_info WHERE user_id = "'.$userid.'"');
+
+
+        if(!empty($res)&& is_array($res)){
+            $res= $res['0'];
+        }
+        $phone = $res['phone'];
         $is_card = 0;
         //如果有绑定的卡记录
         if (!empty($bankCardResult) && isset($bankCardResult)) {
@@ -140,6 +161,7 @@ class Index extends Controller
         }
 
 
+        $this->assign('phone',$phone);
         $this->assign('is_card',$is_card);
         return $this->fetch();
     }
@@ -234,6 +256,14 @@ class Index extends Controller
     {
         return $this->fetch();
     }
+    public function my_yaoqing()
+    {
+        self::base();
+        $userid = Session::get('userid');
+
+        return $this->fetch();
+    }
+
     public function login()
     {
         return $this->fetch();
@@ -345,7 +375,7 @@ class Index extends Controller
                 $data["reason"] =$result;
 
                 $msg = iconv('gbk','utf-8','投资失败，原因:');
-                echo "<script charset='utf-8' language='javascript' type='text/javascript' > alert('".$msg."');parent.location.href='/index/index/self'; </script>";
+                echo "<script charset='utf-8' language='javascript' type='text/javascript' > alert('".$msg."');parent.location.href='/index/index/to_chouzi'; </script>";
                 return;
 
             }
@@ -411,7 +441,6 @@ class Index extends Controller
         $userid = Session::get('userid');
 
         $res = Db::query('select a.remark,a.addtime,a.money from yyd_account_recharge a where user_id = "'.$userid.'"'.'and status = 1 order by addtime desc limit 20');
-
 
         $this->assign('res',$res);
 

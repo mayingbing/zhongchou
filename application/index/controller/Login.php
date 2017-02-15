@@ -45,6 +45,15 @@ class Login extends Controller{
     }
     public function set_password()
     {
+        $userid = Session::get('userid');
+        $phone='';
+        if(!empty($userid)){
+
+            $res = Db::query('select phone from yyd_users_info WHERE user_id = "'.$userid.'"');
+            $phone = $res['0']['phone'];
+
+        }
+        $this->assign('phone',$phone);
         return $this->fetch();
     }
     public function dozuce()
